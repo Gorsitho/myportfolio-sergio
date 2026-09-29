@@ -3,38 +3,52 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Change the title and description to your own name / role -->
-  <title>YOUR_NAME — YOUR_ROLE</title>
-  <meta name="description" content="Portfolio of YOUR_NAME, YOUR_ROLE. Projects, skills and experience.">
+  <!-- Title and description are also updated by script.js for the chosen language -->
+  <title>Sergio Daniel Velásquez — Developer</title>
+  <meta name="description" content="Portfolio of Sergio Daniel Velásquez, software developer. Projects, skills and experience.">
   <meta name="theme-color" content="#1b1d3a">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="YOUR_NAME — YOUR_ROLE">
-  <meta property="og:description" content="Portfolio of YOUR_NAME, YOUR_ROLE.">
+  <meta property="og:title" content="Sergio Daniel Velásquez — Developer">
+  <meta property="og:description" content="Portfolio of Sergio Daniel Velásquez, software developer.">
   <meta property="og:image" content="assets/backgrounds/mountain-dusk.png">
   <link rel="icon" type="image/png" href="assets/dungeon/tile_0088.png">
   <link rel="preload" href="assets/fonts/pixelify-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
 
   <!-- ─── Navigation ─── -->
   <header class="nav" id="nav">
     <a class="nav__brand" href="#hero" data-profile="name">YOUR_NAME</a>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links">
-      <span class="nav__toggle-bars" aria-hidden="true"></span>
-      <span class="sr-only">Menu</span>
-    </button>
-    <nav aria-label="Main">
-      <ul class="nav__links" id="nav-links">
-        <li><a href="#hero">Start</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Journey</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+
+    <div class="nav__right">
+      <div class="lang-switch" role="group" data-i18n-aria="language" aria-label="Language">
+        <button class="lang-switch__btn" type="button" data-lang="en" aria-pressed="true" aria-label="English">
+          <img class="pixel" src="assets/flags/us.png" width="32" height="22" alt="">
+        </button>
+        <button class="lang-switch__btn" type="button" data-lang="es" aria-pressed="false" aria-label="Español">
+          <img class="pixel" src="assets/flags/es.png" width="32" height="22" alt="">
+        </button>
+        <button class="lang-switch__btn" type="button" data-lang="de" aria-pressed="false" aria-label="Deutsch">
+          <img class="pixel" src="assets/flags/de.png" width="32" height="22" alt="">
+        </button>
+      </div>
+
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+        <span class="nav__toggle-bars" aria-hidden="true"></span>
+        <span class="sr-only" data-i18n="menu">Menu</span>
+      </button>
+      <nav data-i18n-aria="mainNav" aria-label="Main">
+        <ul class="nav__links" id="nav-links">
+          <li><a href="#hero" data-i18n="navStart">Start</a></li>
+          <li><a href="#about" data-i18n="navAbout">About</a></li>
+          <li><a href="#experience" data-i18n="navJourney">Journey</a></li>
+          <li><a href="#projects" data-i18n="navProjects">Projects</a></li>
+          <li><a href="#contact" data-i18n="navContact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <main id="main">
@@ -44,21 +58,19 @@
       <div class="motes" data-motes="18" aria-hidden="true"></div>
 
       <div class="hero__content">
-        <p class="area-tag">Dawn · The journey begins</p>
+        <p class="area-tag" data-i18n="heroTag">Dawn · The journey begins</p>
         <img class="hero__avatar pixel" src="assets/dungeon/tile_0088.png" width="96" height="96" alt="">
         <h1 class="hero__name" id="hero-title" data-profile="name">YOUR_NAME</h1>
         <p class="hero__role" data-profile="role">YOUR_ROLE</p>
-        <p class="hero__intro" data-profile="intro">
-          A short introduction about what you build and what you care about.
-        </p>
+        <p class="hero__intro" data-profile="intro"></p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="#projects">See my projects ▸</a>
-          <a class="btn" data-profile-link="github" href="YOUR_GITHUB_URL" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn" data-profile-link="linkedin" href="YOUR_LINKEDIN_URL" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn btn--primary" href="#projects" data-i18n="heroCta">See my projects ▸</a>
+          <a class="btn" data-profile-link="github" href="#" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" data-profile-link="linkedin" href="#" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
 
-      <a class="scroll-hint" href="#about" aria-label="Scroll to About">
+      <a class="scroll-hint" href="#about" data-i18n-aria="scrollHint" aria-label="Scroll to About">
         <span aria-hidden="true">▼</span>
       </a>
     </section>
@@ -75,151 +87,134 @@
 
       <div class="container">
         <header class="section-head">
-          <p class="area-tag">Morning · Whispering Forest</p>
-          <h2 id="about-title">Character Profile</h2>
+          <p class="area-tag" data-i18n="aboutTag">Morning · Whispering Forest</p>
+          <h2 id="about-title" data-i18n="aboutTitle">Character Profile</h2>
         </header>
 
+        <!-- Character screen: portrait + stats, biography, inventory -->
         <div class="window profile">
           <div class="profile__portrait">
             <div class="profile__frame">
-              <img class="pixel" src="assets/dungeon/tile_0088.png" width="112" height="112" alt="Pixel-art adventurer avatar">
+              <img class="pixel" src="assets/dungeon/me01.png" width="112" height="112" data-i18n-alt="avatarAlt" alt="Portrait">
             </div>
             <p class="profile__class" data-profile="role">YOUR_ROLE</p>
           </div>
 
           <dl class="profile__stats">
-            <div><dt>Name</dt><dd data-profile="name">YOUR_NAME</dd></div>
-            <div><dt>Class</dt><dd data-profile="role">YOUR_ROLE</dd></div>
-            <div><dt>Home</dt><dd data-profile="location">YOUR_LOCATION</dd></div>
-            <div><dt>Languages</dt><dd data-profile="languages">YOUR_LANGUAGES</dd></div>
-            <div><dt>Status</dt><dd data-profile="status">Open to new quests</dd></div>
+            <div><dt data-i18n="statName">Name</dt><dd data-profile="name">YOUR_NAME</dd></div>
+            <div><dt data-i18n="statClass">Class</dt><dd data-profile="role">YOUR_ROLE</dd></div>
+            <div><dt data-i18n="statHome">Home</dt><dd data-profile="location">YOUR_LOCATION</dd></div>
+            <div><dt data-i18n="statLanguages">Languages</dt><dd data-profile="languages">YOUR_LANGUAGES</dd></div>
           </dl>
 
           <div class="profile__bio">
-            <h3>Biography</h3>
-            <div data-profile-bio>
-              <p>Write a few sentences about yourself here: your background, what you enjoy building, and what you are looking for next.</p>
+            <h3 data-i18n="bioTitle">Biography</h3>
+            <div data-profile-bio></div>
+          </div>
+
+          <div class="profile__inventory inventory">
+            <div class="inventory__head">
+              <h3 data-i18n="inventoryTitle">Inventory</h3>
+              <p class="inventory__hint" data-i18n="inventoryHint">Select an item to inspect it.</p>
             </div>
+            <ul class="inventory__grid" id="skill-list" role="list"></ul>
+            <div class="inventory__details" id="skill-details" aria-live="polite"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ─── 3. PROJECTS · Village ─── -->
-    <section class="scene scene--village" id="projects" aria-labelledby="projects-title">
-      <div class="clouds" aria-hidden="true"></div>
+    <!-- ─── 3. JOURNEY · Green meadow ─── -->
+    <section class="scene scene--meadow" id="experience" aria-labelledby="experience-title">
+      <div class="parallax parallax--meadow" aria-hidden="true">
+        <div class="layer meadow-sky" data-depth="0.3"></div>
+        <div class="layer meadow-trees-far" data-depth="0.2"></div>
+        <div class="layer meadow-trees-near" data-depth="0.12"></div>
+        <div class="layer meadow-grass" data-depth="0.04"></div>
+      </div>
 
       <div class="container">
         <header class="section-head">
-          <p class="area-tag">Midday · Guild Village</p>
-          <h2 id="projects-title">Quest Board</h2>
-          <p class="section-sub">Projects I have taken on. Pick a quest to see the code or try the demo.</p>
-        </header>
-
-        <div class="board">
-          <div class="board__sign" aria-hidden="true">Quests</div>
-          <ul class="board__quests" id="project-list" role="list"></ul>
-        </div>
-      </div>
-
-      <div class="village" aria-hidden="true">
-        <img class="pixel village__tree" src="assets/town/tile_0004.png" alt="">
-        <img class="pixel village__house" src="assets/town/house-blue.png" alt="">
-        <img class="pixel village__tree" src="assets/town/tile_0016.png" alt="">
-        <img class="pixel village__prop" src="assets/town/tile_0094.png" alt="">
-        <img class="pixel village__house village__house--hide-sm" src="assets/town/house-red.png" alt="">
-        <img class="pixel village__tree" src="assets/town/tile_0028.png" alt="">
-        <img class="pixel village__prop" src="assets/town/tile_0083.png" alt="">
-        <img class="pixel village__tree village__tree--hide-sm" src="assets/town/tile_0003.png" alt="">
-      </div>
-    </section>
-
-    <!-- ─── 4. SKILLS · Workshop ─── -->
-    <section class="scene scene--workshop" id="skills" aria-labelledby="skills-title">
-      <div class="container">
-        <header class="section-head">
-          <p class="area-tag">Afternoon · The Workshop</p>
-          <h2 id="skills-title">Inventory</h2>
-          <p class="section-sub">The tools I carry on every quest. Select an item to inspect it.</p>
-        </header>
-
-        <div class="window inventory">
-          <ul class="inventory__grid" id="skill-list" role="list"></ul>
-          <div class="inventory__details" id="skill-details" aria-live="polite">
-            <p class="inventory__hint">Select an item to see its description.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="workshop" aria-hidden="true">
-        <img class="pixel" src="assets/dungeon/tile_0082.png" alt="">
-        <img class="pixel" src="assets/dungeon/tile_0074.png" alt="">
-        <img class="pixel" src="assets/town/tile_0107.png" alt="">
-        <img class="pixel workshop__hide-sm" src="assets/dungeon/tile_0089.png" alt="">
-        <img class="pixel workshop__hide-sm" src="assets/dungeon/tile_0082.png" alt="">
-      </div>
-    </section>
-
-    <!-- ─── 5. EXPERIENCE · Sunset ─── -->
-    <section class="scene scene--sunset" id="experience" aria-labelledby="experience-title">
-      <div class="container">
-        <header class="section-head">
-          <p class="area-tag">Sunset · The Long Road</p>
-          <h2 id="experience-title">The Journey So Far</h2>
+          <p class="area-tag" data-i18n="journeyTag">Midday · The Green Meadows</p>
+          <h2 id="experience-title" data-i18n="journeyTitle">The Journey So Far</h2>
         </header>
 
         <ol class="journey" id="experience-list" role="list"></ol>
       </div>
-      <div class="sunset-hills" aria-hidden="true"></div>
     </section>
 
-    <!-- ─── 6. CONTACT · Night ─── -->
+    <!-- ─── 4. PROJECTS · Village ─── -->
+    <section class="scene scene--village" id="projects" aria-labelledby="projects-title">
+      <div class="parallax parallax--village" aria-hidden="true">
+        <div class="layer village-sky" data-depth="0.35"></div>
+        <div class="layer village-trees" data-depth="0.15"></div>
+      </div>
+
+      <div class="container">
+        <header class="section-head">
+          <p class="area-tag" data-i18n="projectsTag">Afternoon · Guild Village</p>
+          <h2 id="projects-title" data-i18n="projectsTitle">Quest Board</h2>
+          <p class="section-sub" data-i18n="projectsSub">Projects I have taken on. Pick a quest to try the demo.</p>
+        </header>
+
+        <div class="board">
+          <div class="board__sign" aria-hidden="true" data-i18n="boardSign">Quests</div>
+          <ul class="board__quests" id="project-list" role="list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 5. CONTACT · Night ─── -->
     <section class="scene scene--night" id="contact" aria-labelledby="contact-title">
       <div class="stars" data-stars="70" aria-hidden="true"></div>
       <div class="fireflies" data-fireflies="8" aria-hidden="true"></div>
 
       <div class="container">
         <header class="section-head">
-          <p class="area-tag">Night · The End of the Road</p>
-          <h2 id="contact-title">Send a Message</h2>
+          <p class="area-tag" data-i18n="contactTag">Night · The End of the Road</p>
+          <h2 id="contact-title" data-i18n="contactTitle">Send a Message</h2>
         </header>
 
         <div class="night">
           <div class="window contact">
-            <p class="contact__lead">This journey ends here — the next one could start with you.</p>
-            <p>Have a project, a role or just a question? My inbox is always open.</p>
+            <p class="contact__lead" data-i18n="contactLead">This journey ends here — the next one could start with you.</p>
+            <p data-i18n="contactText">Have a project, a role or just a question? My inbox is always open.</p>
             <ul class="contact__links" role="list">
               <li>
-                <a class="btn btn--primary" data-profile-link="email" href="mailto:YOUR_EMAIL">
+                <a class="btn btn--primary" data-profile-link="email" href="#">
                   ✉ <span data-profile="email">YOUR_EMAIL</span>
                 </a>
               </li>
-              <li><a class="btn" data-profile-link="github" href="YOUR_GITHUB_URL" target="_blank" rel="noopener">GitHub</a></li>
-              <li><a class="btn" data-profile-link="linkedin" href="YOUR_LINKEDIN_URL" target="_blank" rel="noopener">LinkedIn</a></li>
+              <li><a class="btn" data-profile-link="github" href="#" target="_blank" rel="noopener">GitHub</a></li>
+              <li><a class="btn" data-profile-link="linkedin" href="#" target="_blank" rel="noopener">LinkedIn</a></li>
             </ul>
           </div>
           <img class="pixel night__castle" src="assets/backgrounds/castle-night.gif" width="372" height="372"
-               alt="Pixel-art castle under a full moon">
+               data-i18n-alt="castleAlt" alt="Pixel-art castle under a full moon">
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <p class="footer__thanks">Thanks for exploring.</p>
+    <p class="footer__thanks" data-i18n="thanks">Thanks for exploring.</p>
     <p>© <span id="year"></span> <span data-profile="name">YOUR_NAME</span></p>
     <details class="credits">
-      <summary>Art credits</summary>
+      <summary data-i18n="credits">Art credits</summary>
       <ul role="list">
-        <li><a href="https://kenney.nl/assets/tiny-town" target="_blank" rel="noopener">Tiny Town</a>,
-          <a href="https://kenney.nl/assets/tiny-dungeon" target="_blank" rel="noopener">Tiny Dungeon</a> and
-          <a href="https://kenney.nl/assets/pixel-platformer" target="_blank" rel="noopener">Pixel Platformer</a>
+        <li><a href="https://opengameart.org/content/green-meadow-pixel-art-background" target="_blank" rel="noopener">Green Meadow Pixel Art Background</a>
+          by <a href="https://craftpix.net" target="_blank" rel="noopener">CraftPix.net</a> — OGA-BY 3.0</li>
+        <li><a href="https://kenney.nl/assets/tiny-town" target="_blank" rel="noopener">Tiny Town</a> and
+          <a href="https://kenney.nl/assets/tiny-dungeon" target="_blank" rel="noopener">Tiny Dungeon</a>
           by Kenney — CC0</li>
-        <li><a href="https://opengameart.org/content/mountain-at-dusk-background" target="_blank" rel="noopener">Mountain at Dusk</a>
-          and <a href="https://opengameart.org/content/forest-background" target="_blank" rel="noopener">Forest Background</a>
+        <li><a href="https://opengameart.org/content/mountain-at-dusk-background" target="_blank" rel="noopener">Mountain at Dusk</a>,
+          <a href="https://opengameart.org/content/forest-background" target="_blank" rel="noopener">Forest Background</a> and
+          <a href="https://opengameart.org/content/sunny-land-2d-pixel-art-pack" target="_blank" rel="noopener">Sunny Land</a>
           by Luis Zuno (ansimuz) — CC0</li>
         <li><a href="https://opengameart.org/content/castle-in-the-dark" target="_blank" rel="noopener">Castle in the Dark</a>
           by biodegradableguy — CC0</li>
+        <li><a href="https://opengameart.org/content/country-flags" target="_blank" rel="noopener">Country flag icons</a>
+          by Mark James (famfamfam) — public domain</li>
         <li><a href="https://github.com/eifetx/Pixelify-Sans" target="_blank" rel="noopener">Pixelify Sans</a>
           font — SIL Open Font License</li>
       </ul>
