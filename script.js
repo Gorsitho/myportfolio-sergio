@@ -5,7 +5,7 @@
    ===================================================================== */
 
 const PROFILE = {
-  name: 'Sergio Daniel Velásquez',
+  name: 'Sergio Velásquez',
   role: { en: 'Developer', es: 'Desarrollador', de: 'Entwickler' },
   intro: {
     en: 'Colombian software developer and Master’s student in Applied Computer Science at the University of Bamberg, passionate about building practical solutions.',
@@ -23,6 +23,7 @@ const PROFILE = {
 // assets/dungeon/tile_0089.png (chest), tile_0066.png (scroll), tile_0104.png (sword),
 // tile_0116.png (blue potion), tile_0101.png (ring)
 // rank: 'main' or 'side'
+// code (optional): repository link, shown as a "View code" button
 const PROJECTS = [
   {
     title: 'Vie Clinic',
@@ -49,28 +50,48 @@ const PROJECTS = [
     rank: 'side',
   },
   {
-    title: 'Project Three',
+    title: 'Advanced Angular',
     description: {
-      en: 'What did you learn? What result are you proud of? Mention it here.',
-      es: '¿Qué aprendiste? ¿De qué resultado estás orgulloso? Menciónalo aquí.',
-      de: 'Was hast du gelernt? Auf welches Ergebnis bist du stolz? Erwähne es hier.',
+      en: 'Angular course completed on the Udemy platform.',
+      es: 'Curso de Angular completado en la plataforma Udemy.',
+      de: 'Angular-Kurs, abgeschlossen auf der Plattform Udemy.',
     },
-    technologies: ['JavaScript', 'Git'],
+    technologies: ['Angular', 'TypeScript'],
     demo: 'https://example.com',
+    code: 'https://github.com/Gorsitho',
     icon: 'assets/dungeon/tile_0104.png',
     rank: 'side',
   },
+];
+
+// Shown below the quest board. Icons are 16×16 pixel art in assets/achievements/
+const ACHIEVEMENTS = [
   {
-    title: 'Project Four',
+    title: { en: 'German B2 Certificate', es: 'Certificado de alemán B2', de: 'Deutsch-Zertifikat B2' },
     description: {
-      en: 'A placeholder for another project. Replace the title, text, technologies and links.',
-      es: 'Un espacio para otro proyecto. Cambia el título, el texto, las tecnologías y los enlaces.',
-      de: 'Platzhalter für ein weiteres Projekt. Ersetze Titel, Text, Technologien und Links.',
+      en: 'Certified German language skills at level B2.',
+      es: 'Conocimientos de alemán certificados en el nivel B2.',
+      de: 'Zertifizierte Deutschkenntnisse auf Niveau B2.',
     },
-    technologies: ['HTML', 'CSS', 'Python'],
-    demo: 'https://example.com',
-    icon: 'assets/dungeon/tile_0116.png',
-    rank: 'side',
+    icon: 'assets/achievements/german-b2.svg',
+  },
+  {
+    title: { en: 'Volunteering in Germany', es: 'Voluntariado en Alemania', de: 'Ehrenamt in Deutschland' },
+    description: {
+      en: 'Gave my time to support the local community in Germany.',
+      es: 'Dediqué mi tiempo a apoyar a la comunidad local en Alemania.',
+      de: 'Ehrenamtlicher Einsatz für die lokale Gemeinschaft in Deutschland.',
+    },
+    icon: 'assets/achievements/volunteering.svg',
+  },
+  {
+    title: 'Scrum Fundamentals Certified',
+    description: {
+      en: 'Certified in the fundamentals of the Scrum framework and agile teamwork.',
+      es: 'Certificado en los fundamentos del marco Scrum y el trabajo ágil en equipo.',
+      de: 'Zertifiziert in den Grundlagen des Scrum-Frameworks und agiler Teamarbeit.',
+    },
+    icon: 'assets/achievements/scrum.svg',
   },
 ];
 
@@ -254,6 +275,10 @@ const UI = {
     rankSide: 'Side quest',
     demo: 'Live demo',
     technologies: 'Technologies',
+    stamp: 'Completed',
+    code: 'View code',
+    achievementsTitle: 'Achievements',
+    achievementUnlocked: 'Achievement unlocked',
     contactTag: 'Night · The End of the Road',
     contactTitle: 'Send a Message',
     contactLead: 'This journey ends here — the next one could start with you.',
@@ -298,6 +323,10 @@ const UI = {
     rankSide: 'Misión secundaria',
     demo: 'Ver demo',
     technologies: 'Tecnologías',
+    stamp: 'Completada',
+    code: 'Ver código',
+    achievementsTitle: 'Logros',
+    achievementUnlocked: 'Logro desbloqueado',
     contactTag: 'Noche · El final del camino',
     contactTitle: 'Envíame un mensaje',
     contactLead: 'Este viaje termina aquí — el próximo podría empezar contigo.',
@@ -342,6 +371,10 @@ const UI = {
     rankSide: 'Nebenquest',
     demo: 'Live-Demo',
     technologies: 'Technologien',
+    stamp: 'Erledigt',
+    code: 'Code ansehen',
+    achievementsTitle: 'Erfolge',
+    achievementUnlocked: 'Erfolg freigeschaltet',
     contactTag: 'Nacht · Das Ende des Weges',
     contactTitle: 'Schreib mir',
     contactLead: 'Diese Reise endet hier – die nächste könnte mit dir beginnen.',
@@ -473,8 +506,39 @@ function renderProjects() {
 
       const links = el('div', 'quest__links');
       links.append(externalLink(project.demo, ui('demo'), 'btn btn--small', `${project.title}: ${ui('demo')}`));
+      if (project.code) {
+        const code = externalLink(project.code, '', 'btn btn--small btn--code', `${project.title}: ${ui('code')}`);
+        code.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>';
+        code.append(ui('code'));
+        links.append(code);
+      }
+
+      // Ink stamp in the bottom corner of the quest paper
+      const stamp = el('span', 'quest__stamp');
+      stamp.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>';
+      stamp.append(ui('stamp'));
+      links.append(stamp);
 
       item.append(head, el('p', 'quest__desc', t(project.description)), tech, links);
+      return item;
+    }),
+  );
+}
+
+/* ─── Achievements: "unlocked" banners below the quest board ─── */
+function renderAchievements() {
+  document.getElementById('achievement-list').replaceChildren(
+    ...ACHIEVEMENTS.map((achievement) => {
+      const item = el('li', 'achievement');
+      const frame = el('div', 'achievement__frame');
+      frame.append(pixelImg(achievement.icon, 'achievement__icon'));
+      const text = el('div');
+      text.append(
+        el('p', 'achievement__label', ui('achievementUnlocked')),
+        el('h4', 'achievement__title', t(achievement.title)),
+        el('p', 'achievement__desc', t(achievement.description)),
+      );
+      item.append(frame, text);
       return item;
     }),
   );
@@ -539,6 +603,7 @@ function renderAll() {
   renderInterface();
   renderProfile();
   renderProjects();
+  renderAchievements();
   renderSkills();
   renderExperience();
 }
@@ -555,9 +620,10 @@ function setupLanguageSwitch() {
 }
 
 /* ─── Background music ───
-   Browsers block sound until the visitor interacts with the page, so the loop
+   The loop tries to start as soon as the page loads. Most browsers block sound
+   until the visitor interacts with the page, so if autoplay is refused it
    starts on the first click, tap or key press (unless it was switched off). */
-const MUSIC_VOLUME = 0.3;
+const MUSIC_VOLUME = 0.15;
 
 function setupMusic() {
   const audio = document.getElementById('bg-music');
