@@ -1,0 +1,81 @@
+---
+/** A generated city skyline with lit (and a few flickering) windows. */
+import { seededRandom } from '../../lib/pixel';
+
+interface Props {
+  color: string;
+  windowColor?: string;
+  height: number;
+  seed: number;
+  /** Chance that a window is lit. */
+  lit?: number;
+  minBuilding?: number;
+  maxBuilding?: number;
+  bottom?: number;
+  class?: string;
+}
+
+const VIEW_WIDTH = 2400;
+const UNIT = 8;
+const {
+  color,
+  windowColor = '#ffcf73',
+  height,
+  seed,
+  lit = 0.22,
+  minBuilding = 0.35,
+  maxBuilding = 0.95,
+  bottom = 0,
+  class: className,
+} = Astro.props;
+
+const random = seededRandom(seed);
+const snap = (value: number) => Math.round(value / UNIT) * UNIT;
+const rect = (x: number, y: number, w: number, h: number) => `M${x} ${y}h${w}v${h}h${-w}Z`;
+
+let body = '';
+const windows: { x: number; y: number; flicker: boolean }[] = [];
+
+for (let x = 0; x < VIEW_WIDTH; ) {
+  const width = snap(56 + random() * 110);
+  const top = height - snap(height * (minBuilding + random() * (maxBuilding - minBuilding)));
+  body += rect(x, top, width, height - top);
+
+  const roof = random();
+  if (roof > 0.75) body += rect(x + width / 2 - UNIT / 2, top - UNIT * 4, UNIT / 2, UNIT * 4); // antenna
+  else if (roof > 0.5) body += rect(x + UNIT, top - UNIT, width - UNIT * 2, UNIT); // parapet
+  else if (roof > 0.3) body += rect(x + UNIT * 2, top - UNIT * 2, UNIT * 3, UNIT * 2); // water tank
+
+  for (let wy = top + UNIT * 2; wy < height - UNIT * 2; wy += UNIT * 2) {
+    for (let wx = x + UNIT; wx < x + width - UNIT; wx += UNIT * 2) {
+      if (random() < lit) windows.push({ x: wx, y: wy, flicker: random() < 0.12 });
+    }
+  }
+  x += width + snap(random() * 24);
+}
+---
+
+<svg
+  class:list={['layer', className]}
+  style={`--layer-height:${height}px;--layer-bottom:${bottom}px`}
+  viewBox={`0 0 ${VIEW_WIDTH} ${height}`}
+  preserveAspectRatio="xMidYMax slice"
+  shape-rendering="crispEdges"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={body} fill={color}></path>
+  {
+    windows.map((w, i) => (
+      <rect
+        x={w.x}
+        y={w.y}
+        width={UNIT}
+        height={UNIT}
+        fill={windowColor}
+        class={w.flicker ? 'anim-glow' : undefined}
+        style={w.flicker ? `--delay:${(i % 7) * 0.4}s;--duration:1.2s` : undefined}
+      />
+    ))
+  }
+</svg>

@@ -1,0 +1,210 @@
+/* ─────────────────────────────────────────────────────────────────────
+   ANIMATIONS
+   Everything here animates only transform/opacity. All ambient motion is
+   switched off for visitors who prefer reduced motion (bottom of file).
+   ───────────────────────────────────────────────────────────────────── */
+
+/* Sprite sheets: frames 0–1 idle, 2–3 walk (see src/art/traveler.ts) */
+.anim-idle > svg {
+  animation: sprite-idle 1.6s steps(2) infinite;
+}
+
+.anim-walk > svg {
+  animation: sprite-walk 0.36s steps(2) infinite;
+}
+
+.anim-flicker > svg {
+  animation: sprite-flicker 0.5s steps(2) infinite;
+}
+
+@keyframes sprite-idle {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes sprite-walk {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes sprite-flicker {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Ambient world motion */
+.anim-drift {
+  animation: drift var(--duration, 70s) ease-in-out infinite alternate;
+}
+
+.anim-twinkle {
+  animation: twinkle var(--duration, 3.2s) steps(3) infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.anim-glow {
+  animation: glow-pulse var(--duration, 2.4s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+.anim-float {
+  animation: float var(--duration, 7s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.anim-smoke {
+  animation: smoke var(--duration, 4.5s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.anim-sway {
+  transform-origin: 50% 0;
+  animation: sway var(--duration, 5s) ease-in-out infinite alternate;
+}
+
+.anim-sway-ground {
+  transform-origin: 50% 100%;
+  animation: sway var(--duration, 3.5s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+.anim-spin {
+  animation: spin var(--duration, 12s) steps(24) infinite;
+}
+
+.anim-bob {
+  animation: bob 1.8s steps(2) infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(calc(var(--distance, 60px) * -1));
+  }
+  to {
+    transform: translateX(var(--distance, 60px));
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes glow-pulse {
+  from {
+    opacity: 0.65;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.2;
+  }
+  30% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(var(--dx, 14px), var(--dy, -22px));
+  }
+  70% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes smoke {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(var(--dx, 18px), -60px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(-1.5deg);
+  }
+  to {
+    transform: rotate(1.5deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes depth-shift {
+  from {
+    transform: translateY(calc(var(--depth) * -1));
+  }
+  to {
+    transform: translateY(var(--depth));
+  }
+}
+
+/* Reduced motion: freeze the world, keep everything visible. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .anim-idle > svg,
+  .anim-walk > svg,
+  .anim-flicker > svg,
+  .anim-float,
+  .anim-smoke,
+  .anim-twinkle,
+  .anim-drift,
+  .anim-bob {
+    animation: none !important;
+  }
+
+  .anim-smoke {
+    display: none;
+  }
+}

@@ -1,0 +1,293 @@
+/* ─────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS
+   Colours, spacing and type used across the site. Change the look here.
+   Biome (per-section) sky colours live in world.css.
+   ───────────────────────────────────────────────────────────────────── */
+:root {
+  /* Palette */
+  --color-night: #0a0e1c;
+  --color-night-deep: #05070f;
+  --color-bg: #0f1424;
+  --color-surface: #151b30;
+  --color-surface-raised: #1d2542;
+  --color-surface-edge: #070a14;
+  --color-frame: #c9b28a;
+  --color-text: #f4ecdc;
+  --color-muted: #c4bdb0;
+  --color-accent: #f2a541;
+  --color-accent-strong: #ffc46b;
+  --color-teal: #57b3a4;
+  --color-forest: #2f6b4f;
+  --color-sunlight: #f7d88a;
+  --color-sunset: #e0703f;
+  --color-moonlight: #bcd0f5;
+  --color-parchment: #f0e2be;
+  --color-parchment-shade: #dcc796;
+  --color-ink: #2b2118;
+  --color-ink-muted: #5a4935;
+  --color-wood: #6b4427;
+  --color-wood-dark: #3e2616;
+  --color-wood-light: #93643a;
+  --color-focus: #ffd166;
+
+  /* Typography — font variables come from Astro's font API (astro.config.mjs) */
+  --font-display: var(--font-pixel, ui-monospace, monospace);
+  --font-text: var(--font-body, system-ui, sans-serif);
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  --text-2xl: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+  --text-display: clamp(2.75rem, 1.6rem + 5.5vw, 5.5rem);
+  --leading-tight: 1.15;
+  --leading-body: 1.65;
+
+  /* Spacing scale (4px grid) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* Pixel grid: thickness of one "pixel" in UI borders */
+  --px: 4px;
+
+  /* Layout */
+  --content-width: 62rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --hud-height: 3.5rem;
+
+  /* Layers */
+  --z-content: 1;
+  --z-traveler: 20;
+  --z-hud: 30;
+  --z-skip: 100;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+
+  color-scheme: dark;
+}
+
+@media (max-width: 30rem) {
+  :root {
+    --px: 3px;
+  }
+}
+
+/* ─── Reset ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--hud-height) + var(--space-4));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-night);
+  color: var(--color-text);
+  font-family: var(--font-text);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  overflow-x: clip;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-skip);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-accent);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Pixel-font label used for eyebrows, HUD and small UI text */
+.pixel-label {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ─── RPG window (dark UI panel with a notched pixel frame) ─────────── */
+.ui-window {
+  --frame-outer: var(--color-surface-edge);
+  --frame-inner: var(--color-frame);
+  position: relative;
+  background: linear-gradient(to bottom, var(--color-surface-raised), var(--color-surface));
+  border: var(--px) solid var(--frame-inner);
+  box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--frame-outer),
+    0 var(--px) 0 0 var(--frame-outer),
+    calc(var(--px) * -1) 0 0 0 var(--frame-outer),
+    var(--px) 0 0 0 var(--frame-outer),
+    calc(var(--px) * 2) calc(var(--px) * 3) 0 0 rgb(0 0 0 / 0.35),
+    inset 0 var(--px) 0 0 rgb(255 255 255 / 0.06);
+}
+
+/* ─── Buttons & links ───────────────────────────────────────────────── */
+.btn {
+  --btn-bg: var(--color-accent);
+  --btn-fg: var(--color-ink);
+  --btn-edge: var(--color-surface-edge);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-5);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--btn-edge),
+    0 var(--px) 0 0 var(--btn-edge),
+    calc(var(--px) * -1) 0 0 0 var(--btn-edge),
+    var(--px) 0 0 0 var(--btn-edge),
+    inset 0 calc(var(--px) * -1) 0 0 rgb(0 0 0 / 0.25),
+    inset 0 var(--px) 0 0 rgb(255 255 255 / 0.3);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast);
+}
+
+.btn:hover {
+  --btn-bg: var(--color-accent-strong);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(2px);
+}
+
+.btn--ghost {
+  --btn-bg: rgb(10 14 28 / 0.55);
+  --btn-fg: var(--color-text);
+  --btn-edge: var(--color-frame);
+}
+
+.btn--ghost:hover {
+  --btn-bg: rgb(10 14 28 / 0.8);
+}
+
+/* Inline text links inside content */
+.text-link {
+  color: var(--color-accent-strong);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.text-link:hover {
+  color: var(--color-sunlight);
+}
+
+/* Small tag, e.g. technologies */
+.tag {
+  display: inline-block;
+  padding: 0.1rem var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  letter-spacing: 0.03em;
+  background: rgb(255 255 255 / 0.08);
+  border: 2px solid rgb(255 255 255 / 0.18);
+}

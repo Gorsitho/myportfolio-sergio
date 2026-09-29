@@ -1,0 +1,38 @@
+---
+/** A few slowly drifting pixel clouds. */
+import PixelSprite from './PixelSprite.astro';
+import { cloud } from '../../art/scenery';
+import { seededRandom } from '../../lib/pixel';
+
+interface Props {
+  count: number;
+  seed: number;
+  light: string;
+  shadow: string;
+  /** Vertical band in % of the parent's height. */
+  top?: number;
+  bottomLimit?: number;
+  opacity?: number;
+}
+
+const { count, seed, light, shadow, top = 5, bottomLimit = 45, opacity = 0.85 } = Astro.props;
+const random = seededRandom(seed);
+const clouds = Array.from({ length: count }, (_, i) => ({
+  left: (100 / count) * i + random() * (60 / count),
+  top: top + random() * (bottomLimit - top),
+  scale: 4 + Math.floor(random() * 4),
+  duration: 50 + Math.round(random() * 40),
+}));
+---
+
+{
+  clouds.map((c) => (
+    <PixelSprite
+      frames={[cloud]}
+      palette={{ w: light, s: shadow }}
+      scale={c.scale}
+      class="prop anim-drift"
+      style={`left:${c.left.toFixed(1)}%;top:${c.top.toFixed(1)}%;opacity:${opacity};--duration:${c.duration}s;`}
+    />
+  ))
+}

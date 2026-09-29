@@ -1,0 +1,41 @@
+---
+/** An animated pixel campfire with a warm glow and rising embers. */
+import PixelSprite from './PixelSprite.astro';
+import Specks from './Specks.astro';
+import { campfireFrames, campfirePalette } from '../../art/scenery';
+
+interface Props {
+  scale?: number;
+  class?: string;
+  style?: string;
+}
+
+const { scale = 4, class: className, style } = Astro.props;
+---
+
+<div class:list={['campfire', className]} style={`--fire-scale:${scale};${style ?? ''}`} aria-hidden="true">
+  <span class="glow anim-glow campfire__glow"></span>
+  <Specks
+    count={6}
+    seed={17}
+    color="#ffb65c"
+    top={-60}
+    bottomLimit={10}
+    sizes={[2, 3]}
+    animation="float"
+  />
+  <PixelSprite frames={campfireFrames} palette={campfirePalette} scale={scale} class="anim-flicker" />
+</div>
+
+<style>
+  .campfire {
+    position: absolute;
+    width: calc(10px * var(--fire-scale));
+    height: calc(10px * var(--fire-scale));
+  }
+
+  .campfire__glow {
+    inset: -250% -300%;
+    --glow-color: rgb(255 170 80 / 0.35);
+  }
+</style>

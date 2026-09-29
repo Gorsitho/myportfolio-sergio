@@ -1,0 +1,52 @@
+---
+/**
+ * One area of the world. Provides the sky, the area banner and the section
+ * heading; the page content goes in the default slot, decorative sky
+ * elements in slot="backdrop" and the landscape in slot="scene".
+ */
+import { regionById } from '../../data/sections';
+
+interface Props {
+  id: string;
+  biome: 'forest' | 'village' | 'workshop' | 'city' | 'summit';
+  /** RPG flavour label above the heading. */
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  class?: string;
+}
+
+const { id, biome, eyebrow, title, intro, class: className } = Astro.props;
+const region = regionById(id);
+const titleId = `${id}-title`;
+---
+
+<section id={id} class:list={['region', `region--${biome}`, className]} aria-labelledby={titleId} data-region>
+  <div class="region__backdrop" aria-hidden="true">
+    <slot name="backdrop" />
+  </div>
+
+  <div class="region__content">
+    <header class="region__header">
+      <p class="area-banner">
+        <span>{region.area}</span>
+        <span class="area-banner__time">{region.timeOfDay}</span>
+      </p>
+      <p class="pixel-label region__eyebrow">{eyebrow}</p>
+      <h2 id={titleId} class="region__title">{title}</h2>
+      {intro && <p class="region__intro">{intro}</p>}
+    </header>
+    <slot />
+  </div>
+
+  <div class="region__scene" aria-hidden="true">
+    <slot name="scene" />
+  </div>
+</section>
+
+<style>
+  .region__eyebrow {
+    color: var(--color-accent-strong);
+    margin-bottom: var(--space-2);
+  }
+</style>

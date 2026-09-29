@@ -1,0 +1,235 @@
+/* ─────────────────────────────────────────────────────────────────────
+   THE WORLD
+   Every section is a "region" with its own sky. The first colour of each
+   sky equals the foreground colour of the region above it, so the page
+   reads as one continuous landscape from dawn to night.
+   ───────────────────────────────────────────────────────────────────── */
+
+.region {
+  --scene-height: 220px;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  padding: var(--space-9) var(--gutter) calc(var(--scene-height) + var(--space-7));
+  background: var(--sky);
+}
+
+.region__backdrop,
+.region__scene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.region__backdrop {
+  z-index: -2;
+}
+
+.region__scene {
+  top: auto;
+  height: var(--scene-height);
+  z-index: -1;
+}
+
+.region__content {
+  position: relative;
+  z-index: var(--z-content);
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+.region__header {
+  margin-bottom: var(--space-7);
+}
+
+.region__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-2xl);
+  letter-spacing: 0.01em;
+}
+
+.region__intro {
+  max-width: 38rem;
+  margin-top: var(--space-3);
+  color: var(--color-muted);
+}
+
+/* "Now entering…" banner shown at the top of each region */
+.area-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-sunlight);
+  background: rgb(5 7 15 / 0.45);
+  border-block: 2px solid rgb(247 216 138 / 0.45);
+}
+
+.area-banner__time {
+  color: var(--color-muted);
+}
+
+.area-banner__time::before {
+  content: '·';
+  margin-right: var(--space-3);
+  color: var(--color-sunlight);
+}
+
+/* ─── Biomes: sky colours per region ───────────────────────────────── */
+.region--dawn {
+  --scene-height: clamp(200px, 30vh, 300px);
+  --sky: linear-gradient(
+    to bottom,
+    #10162b 0%,
+    #1b2240 32%,
+    #3f3a55 52%,
+    #9a5a58 70%,
+    #e2915c 86%,
+    #f6c27a 100%
+  );
+}
+
+.region--forest {
+  --scene-height: 240px;
+  --sky:
+    linear-gradient(
+      to bottom,
+      #183b37 0%,
+      #1f4a42 22%,
+      #2f6655 48%,
+      #6f9f7d 76%,
+      #bcd6a4 100%
+    );
+}
+
+.region--village {
+  --scene-height: 250px;
+  --sky: linear-gradient(
+    to bottom,
+    #2d5d58 0%,
+    #3a7778 22%,
+    #6aa7a8 50%,
+    #b7d6c2 78%,
+    #efe3b5 100%
+  );
+}
+
+.region--workshop {
+  --scene-height: 120px;
+  --sky:
+    linear-gradient(to bottom, #3a2e24 0, transparent 160px),
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgb(255 190 110 / 0.22), transparent),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgb(255 170 90 / 0.12), transparent),
+    repeating-linear-gradient(
+      90deg,
+      #26170f 0 4px,
+      #47301f 4px 52px,
+      #3f2a1b 52px 56px,
+      #4b3322 56px 104px
+    );
+}
+
+.region--city {
+  --scene-height: 280px;
+  --sky: linear-gradient(
+    to bottom,
+    #22160f 0%,
+    #2e2c47 14%,
+    #4a3a57 38%,
+    #9c4f4c 62%,
+    #e48450 84%,
+    #f6b86a 100%
+  );
+}
+
+.region--summit {
+  --scene-height: 300px;
+  --sky: linear-gradient(to bottom, #141a2e 0%, #10172b 40%, #182440 72%, #28395a 100%);
+}
+
+.region--night {
+  --scene-height: 0px;
+  --sky: linear-gradient(to bottom, #0a0e1c 0%, #05070f 100%);
+}
+
+/* ─── Silhouette layers & sprites ──────────────────────────────────── */
+.layer {
+  position: absolute;
+  left: 0;
+  bottom: var(--layer-bottom, 0px);
+  width: 100%;
+  height: calc(var(--layer-height) * var(--layer-scale, 1));
+}
+
+@media (max-width: 40rem) {
+  .region {
+    --layer-scale: 0.72;
+  }
+}
+
+.sprite {
+  --scale: var(--scale-default);
+  display: inline-block;
+  flex: none;
+  width: calc(var(--frame-width) * var(--scale) * 1px);
+  height: calc(var(--frame-height) * var(--scale) * 1px);
+  overflow: hidden;
+  line-height: 0;
+}
+
+.sprite > svg {
+  width: calc(var(--frame-width) * var(--frames) * var(--scale) * 1px);
+  height: 100%;
+  max-width: none;
+}
+
+/* Pixel sprites are placed absolutely inside scenes */
+.prop {
+  position: absolute;
+}
+
+/* Decorative dots used for stars, fireflies and dust */
+.speck {
+  position: absolute;
+  width: var(--size, 3px);
+  height: var(--size, 3px);
+  background: var(--speck-color, #fff6dc);
+}
+
+/* Soft light glow behind lamps, fires and windows */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow-color, rgb(255 190 100 / 0.45)), transparent 70%);
+}
+
+/* Scroll-linked depth: farther layers drift a little slower than the page. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .depth-far,
+    .depth-mid {
+      animation: depth-shift linear both;
+      animation-timeline: view();
+    }
+
+    .depth-far {
+      --depth: 48px;
+    }
+
+    .depth-mid {
+      --depth: 22px;
+    }
+
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}

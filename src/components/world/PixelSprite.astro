@@ -1,0 +1,40 @@
+---
+/**
+ * Renders a pixel map (or several animation frames side by side) as a crisp
+ * inline SVG. The wrapper shows one frame; `anim-*` classes step through them.
+ */
+import { mapSize, toRuns, type Palette, type PixelMap } from '../../lib/pixel';
+
+interface Props {
+  frames: readonly PixelMap[];
+  palette: Palette;
+  /** CSS pixels per art pixel. Can be overridden in CSS with `--scale`. */
+  scale?: number;
+  class?: string;
+  style?: string;
+}
+
+const { frames, palette, scale = 4, class: className, style } = Astro.props;
+const { width, height } = mapSize(frames[0]);
+
+frames.forEach((frame, index) => {
+  const size = mapSize(frame);
+  if (size.width !== width || size.height !== height) {
+    throw new Error(`Sprite frame ${index} is ${size.width}×${size.height}, expected ${width}×${height}`);
+  }
+});
+
+const runs = frames.flatMap((frame, index) => toRuns(frame, palette, index * width));
+const vars = `--frame-width:${width};--frame-height:${height};--frames:${frames.length};--scale-default:${scale};`;
+---
+
+<span class:list={['sprite', className]} style={vars + (style ?? '')} aria-hidden="true">
+  <svg
+    viewBox={`0 0 ${width * frames.length} ${height}`}
+    preserveAspectRatio="xMinYMin meet"
+    shape-rendering="crispEdges"
+    focusable="false"
+  >
+    {runs.map((run) => <rect x={run.x} y={run.y} width={run.width} height="1" fill={run.fill} />)}
+  </svg>
+</span>

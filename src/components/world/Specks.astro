@@ -1,0 +1,60 @@
+---
+/**
+ * Small square particles scattered over an area: stars, fireflies, dust.
+ * Positions come from a seed, so they are stable between builds.
+ */
+import { seededRandom } from '../../lib/pixel';
+
+interface Props {
+  count: number;
+  seed: number;
+  color?: string;
+  /** Vertical band to fill, in % of the parent's height. */
+  top?: number;
+  bottomLimit?: number;
+  sizes?: number[];
+  animation?: 'twinkle' | 'float' | 'none';
+  class?: string;
+}
+
+const {
+  count,
+  seed,
+  color,
+  top = 0,
+  bottomLimit = 100,
+  sizes = [2, 3, 4],
+  animation = 'twinkle',
+  class: className,
+} = Astro.props;
+
+const random = seededRandom(seed);
+const specks = Array.from({ length: count }, () => ({
+  left: random() * 100,
+  top: top + random() * (bottomLimit - top),
+  size: sizes[Math.floor(random() * sizes.length)],
+  delay: random() * 6,
+  duration: 2.5 + random() * 5,
+  dx: Math.round((random() - 0.5) * 40),
+  dy: Math.round(-10 - random() * 30),
+}));
+const animationClass = animation === 'none' ? undefined : `anim-${animation}`;
+---
+
+<div class:list={['specks', className]} aria-hidden="true">
+  {
+    specks.map((s) => (
+      <span
+        class:list={['speck', animationClass]}
+        style={`left:${s.left.toFixed(2)}%;top:${s.top.toFixed(2)}%;--size:${s.size}px;--delay:-${s.delay.toFixed(2)}s;--duration:${s.duration.toFixed(2)}s;--dx:${s.dx}px;--dy:${s.dy}px;${color ? `--speck-color:${color};` : ''}`}
+      />
+    ))
+  }
+</div>
+
+<style>
+  .specks {
+    position: absolute;
+    inset: 0;
+  }
+</style>
