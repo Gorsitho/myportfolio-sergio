@@ -17,21 +17,6 @@ const PROFILE = {
   email: 'gorsitho@gmail.com',
   github: 'https://github.com/Gorsitho',
   linkedin: 'https://www.linkedin.com/in/gorsitho/',
-  // One string per paragraph
-  bio: {
-    en: [
-      'Write a few sentences about yourself here: your background, what you enjoy building, and what you are looking for next.',
-      'Add a second paragraph about your interests, how you like to work, or what you are learning right now.',
-    ],
-    es: [
-      'Escribe aquí unas frases sobre ti: tu trayectoria, qué te gusta construir y qué buscas a continuación.',
-      'Añade un segundo párrafo sobre tus intereses, tu forma de trabajar o lo que estás aprendiendo ahora.',
-    ],
-    de: [
-      'Schreib hier ein paar Sätze über dich: deinen Werdegang, was du gerne entwickelst und was du als Nächstes suchst.',
-      'Füge einen zweiten Absatz über deine Interessen, deine Arbeitsweise oder das, was du gerade lernst, hinzu.',
-    ],
-  },
 };
 
 // Quest icons: any image in assets/ works. Suggestions:
@@ -186,6 +171,52 @@ const EXPERIENCE = [
   },
 ];
 
+// Right column of the Journey section (yellow cards)
+const EDUCATION = [
+  {
+    period: { en: 'Since 04.2026', es: 'Desde 04.2026', de: 'Seit 04.2026' },
+    title: {
+      en: 'M. Sc. Applied Computer Science',
+      es: 'M. Sc. Informática Aplicada',
+      de: 'M. Sc. Angewandte Informatik',
+    },
+    place: {
+      en: 'Otto-Friedrich University',
+      es: 'Universidad Otto-Friedrich',
+      de: 'Otto-Friedrich-Universität',
+    },
+    description: { en: 'Bamberg, Germany.', es: 'Bamberg, Alemania.', de: 'Bamberg, Deutschland.' },
+  },
+  {
+    period: '02.2016 – 04.2021',
+    title: {
+      en: 'B. Sc. Software Engineering',
+      es: 'Ingeniería de Software',
+      de: 'B. Sc. Softwaretechnik',
+    },
+    place: {
+      en: 'Surcolombia University (USCO)',
+      es: 'Universidad Surcolombiana (USCO)',
+      de: 'Universidad Surcolombiana (USCO)',
+    },
+    description: {
+      en: 'Final grade: 1.5. Neiva, Colombia',
+      es: 'Nota final: 1.5. Neiva, Colombia',
+      de: 'Abschlussnote: 1,5. Neiva, Kolumbien',
+    },
+  },
+  {
+    period: '02.2014 – 11.2015',
+    title: {
+      en: 'Technical Degree in Systems Engineering',
+      es: 'Técnico en Ingeniería de Sistemas',
+      de: 'Technischer Abschluss in Systemtechnik',
+    },
+    place: 'SENA',
+    description: { en: 'Neiva, Colombia', es: 'Neiva, Colombia', de: 'Neiva, Kolumbien' },
+  },
+];
+
 /* ─── Interface text (menus, headings, buttons) ─── */
 const UI = {
   en: {
@@ -208,11 +239,13 @@ const UI = {
     statClass: 'Class',
     statHome: 'Home',
     statLanguages: 'Languages',
-    bioTitle: 'Biography',
+    music: 'Background music',
     inventoryTitle: 'Inventory',
     inventoryHint: 'Select an item to inspect it.',
     journeyTag: 'Midday · The Green Meadows',
     journeyTitle: 'The Journey So Far',
+    workTitle: 'Work',
+    educationTitle: 'Education',
     projectsTag: 'Afternoon · Guild Village',
     projectsTitle: 'Quest Board',
     projectsSub: 'Projects I have taken on. Pick a quest to try the demo.',
@@ -250,11 +283,13 @@ const UI = {
     statClass: 'Clase',
     statHome: 'Hogar',
     statLanguages: 'Idiomas',
-    bioTitle: 'Biografía',
+    music: 'Música de fondo',
     inventoryTitle: 'Inventario',
     inventoryHint: 'Selecciona un objeto para inspeccionarlo.',
     journeyTag: 'Mediodía · Las Praderas Verdes',
     journeyTitle: 'El viaje hasta ahora',
+    workTitle: 'Experiencia',
+    educationTitle: 'Educación',
     projectsTag: 'Tarde · Aldea del Gremio',
     projectsTitle: 'Tablón de misiones',
     projectsSub: 'Proyectos que he emprendido. Elige una misión para probar la demo.',
@@ -292,11 +327,13 @@ const UI = {
     statClass: 'Klasse',
     statHome: 'Heimat',
     statLanguages: 'Sprachen',
-    bioTitle: 'Biografie',
+    music: 'Hintergrundmusik',
     inventoryTitle: 'Inventar',
     inventoryHint: 'Wähle einen Gegenstand, um ihn anzusehen.',
     journeyTag: 'Mittag · Die grünen Wiesen',
     journeyTitle: 'Die bisherige Reise',
+    workTitle: 'Berufserfahrung',
+    educationTitle: 'Ausbildung',
     projectsTag: 'Nachmittag · Gildendorf',
     projectsTitle: 'Auftragsbrett',
     projectsSub: 'Projekte, die ich umgesetzt habe. Wähle einen Auftrag, um die Demo zu testen.',
@@ -325,16 +362,30 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 let lang = initialLanguage();
 let selectedSkill = 0;
 
-function initialLanguage() {
+/* Saved preferences (language, music). Storage can be blocked, e.g. in private mode. */
+function readSetting(key) {
   try {
-    const saved = localStorage.getItem('lang');
-    if (LANGUAGES.includes(saved)) return saved;
+    return localStorage.getItem(key);
   } catch {
-    /* storage unavailable: fall back to the browser language */
+    return null;
   }
+}
+
+function saveSetting(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    /* storage unavailable: the choice lasts for this visit only */
+  }
+}
+
+function initialLanguage() {
+  const saved = readSetting('lang');
+  if (LANGUAGES.includes(saved)) return saved;
   const browser = (navigator.language || 'en').slice(0, 2).toLowerCase();
   return LANGUAGES.includes(browser) ? browser : 'en';
 }
+
 
 /** Pick the current language from a { en, es, de } value; plain values pass through. */
 function t(value) {
@@ -395,9 +446,6 @@ function renderProfile() {
   document.querySelectorAll('[data-profile-link]').forEach((node) => {
     node.href = links[node.dataset.profileLink];
   });
-
-  const bio = document.querySelector('[data-profile-bio]');
-  bio.replaceChildren(...t(PROFILE.bio).map((text) => el('p', '', text)));
 
   document.getElementById('year').textContent = new Date().getFullYear();
 }
@@ -464,23 +512,27 @@ function renderSkills() {
   show(selectedSkill);
 }
 
-/* ─── Experience: journey ─── */
-function renderExperience() {
-  const list = document.getElementById('experience-list');
-  list.replaceChildren(
-    ...EXPERIENCE.map((entry) => {
+/* ─── Journey: work (signposts, blue cards) and education (scrolls, yellow cards) ─── */
+function renderJourney(listId, entries, marker, cardClass) {
+  document.getElementById(listId).replaceChildren(
+    ...entries.map((entry) => {
       const item = el('li', 'journey__stop');
-      const card = el('div', 'window journey__card');
+      const card = el('div', `window journey__card ${cardClass}`.trim());
       card.append(
-        el('p', 'journey__period', entry.period),
-        el('h3', 'journey__title', t(entry.title)),
+        el('p', 'journey__period', t(entry.period)),
+        el('h4', 'journey__title', t(entry.title)),
         el('p', 'journey__place', t(entry.place)),
-        el('p', '', t(entry.description)),
+        el('p', 'journey__desc', t(entry.description)),
       );
-      item.append(pixelImg('assets/town/tile_0083.png', 'journey__marker'), card);
+      item.append(pixelImg(marker, 'journey__marker'), card);
       return item;
     }),
   );
+}
+
+function renderExperience() {
+  renderJourney('experience-list', EXPERIENCE, 'assets/town/tile_0083.png', '');
+  renderJourney('education-list', EDUCATION, 'assets/dungeon/tile_0066.png', 'journey__card--education');
 }
 
 function renderAll() {
@@ -496,14 +548,52 @@ function setupLanguageSwitch() {
   document.querySelectorAll('[data-lang]').forEach((button) => {
     button.addEventListener('click', () => {
       lang = button.dataset.lang;
-      try {
-        localStorage.setItem('lang', lang);
-      } catch {
-        /* storage unavailable: the choice lasts for this visit only */
-      }
+      saveSetting('lang', lang);
       renderAll();
     });
   });
+}
+
+/* ─── Background music ───
+   Browsers block sound until the visitor interacts with the page, so the loop
+   starts on the first click, tap or key press (unless it was switched off). */
+const MUSIC_VOLUME = 0.3;
+
+function setupMusic() {
+  const audio = document.getElementById('bg-music');
+  const toggle = document.querySelector('.music-toggle');
+  let enabled = readSetting('music') !== 'off';
+  let resumeWhenVisible = false;
+
+  audio.volume = MUSIC_VOLUME;
+  const render = () => toggle.setAttribute('aria-pressed', String(!audio.paused));
+  const play = () => audio.play().catch(() => {}).finally(render);
+
+  toggle.addEventListener('click', () => {
+    enabled = audio.paused;
+    saveSetting('music', enabled ? 'on' : 'off');
+    if (enabled) play();
+    else {
+      audio.pause();
+      render();
+    }
+  });
+
+  const startOnFirstInteraction = (event) => {
+    ['pointerdown', 'keydown', 'touchend'].forEach((type) => document.removeEventListener(type, startOnFirstInteraction));
+    if (enabled && audio.paused && !event.target.closest('.music-toggle')) play();
+  };
+  ['pointerdown', 'keydown', 'touchend'].forEach((type) => document.addEventListener(type, startOnFirstInteraction));
+
+  // Pause while the tab is hidden, resume when the visitor comes back.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      resumeWhenVisible = !audio.paused;
+      audio.pause();
+    } else if (resumeWhenVisible) play();
+  });
+
+  if (enabled) play(); // plays right away where the browser allows autoplay
 }
 
 /* ─── Navigation ─── */
@@ -595,6 +685,7 @@ function setupParallax() {
 
 renderAll();
 setupLanguageSwitch();
+setupMusic();
 setupNavigation();
 setupAmbience();
 setupParallax();

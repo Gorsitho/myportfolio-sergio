@@ -60,7 +60,8 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   font-family: var(--font-pixel);
   font-weight: 600;
   line-height: 1.15;
@@ -162,20 +163,98 @@ a {
   transform: translateY(2px);
 }
 
-.btn--primary {
-  color: var(--ink);
-  background: var(--gold);
-  border-color: #fff4c9;
-}
-
-.btn--primary:hover {
-  background: #ffe08a;
-}
-
 .btn--small {
   min-height: 38px;
   padding: 4px 12px;
   font-size: 0.95rem;
+}
+
+/* ─── Dimensional pixel buttons (hero + contact) ───
+   A bevelled face (light top/left, dark bottom/right), a notched pixel
+   outline and a thick bottom edge that makes the button stand up. */
+.pixel-btn {
+  --face: #26306f;
+  --light: #4a58b8;
+  --shade: #151b45;
+  --edge: #0b0e24;
+  --ink-color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 18px 12px;
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  color: var(--ink-color);
+  text-decoration: none;
+  text-shadow: 2px 2px 0 var(--shade);
+  background: var(--face);
+  box-shadow:
+    inset 3px 3px 0 var(--light),
+    inset -3px -5px 0 var(--shade),
+    0 -3px 0 0 var(--edge),
+    0 3px 0 0 var(--edge),
+    -3px 0 0 0 var(--edge),
+    3px 0 0 0 var(--edge),
+    0 9px 0 -3px var(--edge);
+  transition: transform 0.1s, filter 0.1s;
+}
+
+.pixel-btn:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+.pixel-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 3px 3px 0 var(--shade),
+    inset -3px -3px 0 var(--light),
+    0 -3px 0 0 var(--edge),
+    0 3px 0 0 var(--edge),
+    -3px 0 0 0 var(--edge),
+    3px 0 0 0 var(--edge);
+}
+
+.pixel-btn--gold {
+  --face: #ffc93c;
+  --light: #fff1a8;
+  --shade: #c47f18;
+  --ink-color: var(--ink);
+  text-shadow: 1px 1px 0 rgb(255 255 255 / 0.5);
+}
+
+.pixel-btn--github {
+  --face: #2f363d;
+  --light: #5b6570;
+  --shade: #161b22;
+}
+
+.pixel-btn--linkedin {
+  --face: #0a66c2;
+  --light: #4b9be6;
+  --shade: #064582;
+}
+
+/* Pixel icons (Pixelarticons), inlined as an SVG sprite and tinted with the text colour */
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  fill: currentColor;
+  shape-rendering: crispEdges;
+}
+
+.icon use {
+  pointer-events: none;
 }
 
 .tag {
@@ -255,6 +334,38 @@ a {
   transform: translateY(-2px);
 }
 
+/* Music on/off: shows the speaker with waves while playing, crossed out when silent */
+.music-toggle {
+  order: 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 32px;
+  padding: 0;
+  color: var(--text);
+  background: #26306f;
+  border: 2px solid #6b76c9;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s;
+}
+
+.music-toggle:hover {
+  border-color: #eef0ff;
+  transform: translateY(-2px);
+}
+
+.music-toggle[aria-pressed='true'] {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.music-toggle[aria-pressed='true'] .icon--off,
+.music-toggle[aria-pressed='false'] .icon--on {
+  display: none;
+}
+
+
 .lang-switch__btn[aria-pressed='true'] {
   border-color: var(--gold);
   box-shadow: 0 0 0 2px rgb(255 211 92 / 0.35);
@@ -332,7 +443,7 @@ a {
 @media (max-width: 1024px) {
   .nav__toggle {
     display: block;
-    order: 3;
+    order: 4;
   }
 
   .nav__links {
@@ -372,6 +483,16 @@ a {
   .lang-switch__btn img {
     width: 24px;
     height: 17px;
+  }
+
+  .music-toggle {
+    width: 32px;
+    height: 28px;
+  }
+
+  .music-toggle .icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -479,7 +600,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 16px;
+  gap: 22px 18px;
 }
 
 .scroll-hint {
@@ -511,18 +632,67 @@ a {
   pointer-events: none;
 }
 
+/* ─── Seams between sections ───
+   Each area fades out to a shared "seam" colour at its bottom, and the next
+   area fades in from that same colour at its top, so scrolling flows from
+   one landscape into the next instead of cutting between them. */
+.scene--forest {
+  --seam-top: #160805;
+  --seam-bottom: #1e1712;
+}
+
+.scene--meadow {
+  --seam-top: #1e1712;
+  --seam-bottom: #1d4540;
+}
+
+.scene--village {
+  --seam-top: #1d4540;
+  --seam-bottom: #22354a;
+}
+
+.scene--forest::before,
+.scene--meadow::before,
+.scene--village::before,
+.scene--forest::after,
+.scene--meadow::after,
+.scene--village::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: var(--seam-height, 260px);
+  pointer-events: none;
+}
+
+.scene--forest::before,
+.scene--meadow::before,
+.scene--village::before {
+  top: 0;
+  background: linear-gradient(
+    var(--seam-top),
+    color-mix(in srgb, var(--seam-top) 55%, transparent) 35%,
+    color-mix(in srgb, var(--seam-top) 15%, transparent) 70%,
+    transparent
+  );
+}
+
+.scene--forest::after,
+.scene--meadow::after,
+.scene--village::after {
+  bottom: 0;
+  background: linear-gradient(
+    transparent,
+    color-mix(in srgb, var(--seam-bottom) 15%, transparent) 30%,
+    color-mix(in srgb, var(--seam-bottom) 55%, transparent) 65%,
+    var(--seam-bottom)
+  );
+}
+
 /* ─── 2. About · Forest ─── */
 .scene--forest {
   background: #b07030;
-}
-
-.scene--forest::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 1;
-  height: 140px;
-  background: linear-gradient(#160805, transparent);
 }
 
 .forest,
@@ -559,7 +729,7 @@ a {
 
 .profile {
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: 220px 1fr;
   gap: 24px 32px;
   max-width: 860px;
   margin-inline: auto;
@@ -569,20 +739,31 @@ a {
   text-align: center;
 }
 
+/* Portrait: a real photo inside a bevelled gold pixel frame.
+   The photo is scaled smoothly (not pixelated) so it stays sharp. */
 .profile__frame {
-  display: grid;
-  place-items: center;
-  width: 150px;
-  height: 150px;
-  margin: 0 auto 10px;
-  background: #0f1640;
-  border: 4px solid #eef0ff;
-  border-radius: 6px;
+  width: fit-content;
+  margin: 0 auto 12px;
+  padding: 6px;
+  background: #f2b93f;
+  box-shadow:
+    inset 3px 3px 0 #ffe8a3,
+    inset -3px -3px 0 #a8661b,
+    0 -4px 0 0 var(--window-edge),
+    0 4px 0 0 var(--window-edge),
+    -4px 0 0 0 var(--window-edge),
+    4px 0 0 0 var(--window-edge),
+    6px 8px 0 2px rgb(0 0 0 / 0.35);
 }
 
-.profile__frame img {
-  width: 112px;
-  height: 112px;
+.profile__photo {
+  display: block;
+  width: 176px;
+  height: 176px;
+  object-fit: cover;
+  image-rendering: auto;
+  border: 3px solid var(--window-edge);
+  background: #0f1640;
 }
 
 .profile__class {
@@ -594,7 +775,7 @@ a {
   display: grid;
   gap: 6px;
   margin: 0;
-  align-content: start;
+  align-self: center;
 }
 
 .profile__stats div {
@@ -614,16 +795,6 @@ a {
 
 .profile__stats dd {
   margin: 0;
-}
-
-.profile__bio {
-  grid-column: 1 / -1;
-}
-
-.profile__bio h3 {
-  margin-bottom: 10px;
-  font-size: 1.3rem;
-  color: var(--gold);
 }
 
 .fireflies,
@@ -650,16 +821,6 @@ a {
   --trees-visible: 430px;
   color: var(--ink);
   background: #47f3ff;
-}
-
-/* Soft fade from the meadow grass into the village sky */
-.scene--village::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 1;
-  height: 120px;
-  background: linear-gradient(#2d8473, transparent);
 }
 
 .scene--village .section-head h2 {
@@ -958,17 +1119,12 @@ a {
   --s: 3;
   --tile-w: calc(576px * var(--s));
   --img-h: calc(324px * var(--s));
-  background: #249fde;
+  background: #1b2d3a;
 }
 
-/* Soft fade from the forest floor into the meadow sky */
-.scene--meadow::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 1;
-  height: 120px;
-  background: linear-gradient(#544335, transparent);
+/* The meadow art is shown at 70% opacity over the dark base */
+.parallax--meadow {
+  opacity: 0.7;
 }
 
 /* Green Meadow (CraftPix): sky + clouds, far trees, near trees, grass.
@@ -1004,12 +1160,28 @@ a {
   background-image: url('assets/backgrounds/meadow-grass.png'), linear-gradient(transparent calc(var(--img-h) - 2px), #2d8473 0);
 }
 
+/* Two centred columns: work (left) and education (right) */
+.journey-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.journey-col__title {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 3px 3px 0 rgb(0 0 0 / 0.45);
+}
+
 .journey {
   position: relative;
   display: grid;
-  gap: 32px;
-  max-width: 760px;
-  margin: 0 auto;
+  gap: 24px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -1020,7 +1192,7 @@ a {
   position: absolute;
   top: 24px;
   bottom: 24px;
-  left: 23px;
+  left: 21px;
   width: 6px;
   background: repeating-linear-gradient(180deg, #fff1c9 0 10px, transparent 10px 20px);
   filter: drop-shadow(0 0 1px #2a1d14) drop-shadow(2px 2px 0 rgb(0 0 0 / 0.3));
@@ -1029,41 +1201,65 @@ a {
 .journey__stop {
   position: relative;
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr);
-  gap: 20px;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 16px;
   align-items: start;
 }
 
 .journey__marker {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   filter: drop-shadow(2px 3px 0 rgb(0 0 0 / 0.35));
 }
 
 .journey__card {
+  padding: 18px 20px;
   overflow-wrap: anywhere;
 }
 
 .journey__period {
-  margin: 0;
+  margin: 0 0 2px;
   font-family: var(--font-pixel);
   color: var(--gold);
 }
 
 .journey__title {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
 }
 
 .journey__place {
+  margin-bottom: 6px;
   font-style: italic;
   color: var(--text-soft);
+}
+
+.journey__desc {
+  margin: 0;
+}
+
+/* Education cards: same window, in gold */
+.journey__card--education {
+  color: var(--ink);
+  background: linear-gradient(180deg, #ffe08a, #f2b93f);
+  border-color: #fff4c9;
+  box-shadow:
+    0 0 0 4px #4a2b18,
+    8px 10px 0 4px rgb(0 0 0 / 0.35);
+}
+
+.journey__card--education .journey__period {
+  color: #9a3b22;
+}
+
+.journey__card--education .journey__place {
+  color: var(--ink-soft);
 }
 
 /* ─── 5. Contact · Night ─── */
 .scene--night {
   padding-bottom: 100px;
-  background: linear-gradient(180deg, #325762 0, #2b2350 140px, #101540 45%, #05060f 100%);
+  background: linear-gradient(180deg, #22354a 0, #1d2448 220px, #101540 45%, #05060f 100%);
 }
 
 .star {
@@ -1095,13 +1291,13 @@ a {
 .contact__links {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 22px 18px;
   margin: 20px 0 0;
   padding: 0;
   list-style: none;
 }
 
-.contact__links .btn {
+.contact__links .pixel-btn {
   overflow-wrap: anywhere;
 }
 
@@ -1189,6 +1385,11 @@ a {
 
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
+  .journey-columns {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+  }
+
   .profile__inventory {
     grid-template-columns: 1fr;
     grid-template-areas:
