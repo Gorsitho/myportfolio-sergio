@@ -23,6 +23,7 @@ const PROFILE = {
 // assets/dungeon/tile_0089.png (chest), tile_0066.png (scroll), tile_0104.png (sword),
 // tile_0116.png (blue potion), tile_0101.png (ring)
 // rank: 'main' or 'side'
+// demo (optional): live site, shown as a "Live demo" button
 // code (optional): repository link, shown as a "View code" button
 const PROJECTS = [
   {
@@ -57,7 +58,6 @@ const PROJECTS = [
       de: 'Angular-Kurs, abgeschlossen auf der Plattform Udemy.',
     },
     technologies: ['Angular', 'TypeScript'],
-    demo: 'https://example.com',
     code: 'https://github.com/Gorsitho',
     icon: 'assets/dungeon/tile_0104.png',
     rank: 'side',
@@ -283,6 +283,8 @@ const UI = {
     contactTitle: 'Send a Message',
     contactLead: 'This journey ends here — the next one could start with you.',
     contactText: 'Have a project, a role or just a question? My inbox is always open.',
+    copyEmail: 'Click to copy',
+    emailCopied: 'Email copied!',
     castleAlt: 'Pixel-art castle under a full moon',
     thanks: 'Thanks for exploring.',
     credits: 'Art credits',
@@ -331,6 +333,8 @@ const UI = {
     contactTitle: 'Envíame un mensaje',
     contactLead: 'Este viaje termina aquí — el próximo podría empezar contigo.',
     contactText: '¿Tienes un proyecto, un puesto o simplemente una pregunta? Mi bandeja de entrada siempre está abierta.',
+    copyEmail: 'Haz clic para copiar',
+    emailCopied: '¡Correo copiado!',
     castleAlt: 'Castillo en pixel art bajo la luna llena',
     thanks: 'Gracias por explorar.',
     credits: 'Créditos de arte',
@@ -379,6 +383,8 @@ const UI = {
     contactTitle: 'Schreib mir',
     contactLead: 'Diese Reise endet hier – die nächste könnte mit dir beginnen.',
     contactText: 'Du hast ein Projekt, eine Stelle oder einfach eine Frage? Mein Postfach ist immer offen.',
+    copyEmail: 'Zum Kopieren klicken',
+    emailCopied: 'E-Mail kopiert!',
     castleAlt: 'Pixel-Art-Burg unter dem Vollmond',
     thanks: 'Danke fürs Erkunden.',
     credits: 'Grafik-Credits',
@@ -462,6 +468,7 @@ function renderInterface() {
   document.querySelectorAll('[data-i18n]').forEach((node) => (node.textContent = ui(node.dataset.i18n)));
   document.querySelectorAll('[data-i18n-aria]').forEach((node) => node.setAttribute('aria-label', ui(node.dataset.i18nAria)));
   document.querySelectorAll('[data-i18n-alt]').forEach((node) => (node.alt = ui(node.dataset.i18nAlt)));
+  document.querySelectorAll('[data-i18n-title]').forEach((node) => (node.title = ui(node.dataset.i18nTitle)));
 
   document.querySelectorAll('[data-lang]').forEach((button) => {
     button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
@@ -505,7 +512,9 @@ function renderProjects() {
       project.technologies.forEach((name) => tech.append(el('li', 'tag', name)));
 
       const links = el('div', 'quest__links');
-      links.append(externalLink(project.demo, ui('demo'), 'btn btn--small', `${project.title}: ${ui('demo')}`));
+      if (project.demo) {
+        links.append(externalLink(project.demo, ui('demo'), 'btn btn--small', `${project.title}: ${ui('demo')}`));
+      }
       if (project.code) {
         const code = externalLink(project.code, '', 'btn btn--small btn--code', `${project.title}: ${ui('code')}`);
         code.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>';
@@ -615,6 +624,40 @@ function setupLanguageSwitch() {
       lang = button.dataset.lang;
       saveSetting('lang', lang);
       renderAll();
+    });
+  });
+}
+
+/* ─── Contact: clicking the email button copies the address ───
+   The mailto: link stays as the href, so "copy link" / middle-click still work. */
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // Older browsers, or the Clipboard API blocked (e.g. insecure context)
+    const field = el('textarea');
+    field.value = text;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.opacity = '0';
+    document.body.append(field);
+    field.select();
+    document.execCommand('copy');
+    field.remove();
+  }
+}
+
+function setupEmailCopy() {
+  document.querySelectorAll('.copy-email').forEach((link) => {
+    const toast = link.querySelector('.copy-email__toast');
+    let hideTimer;
+    link.addEventListener('click', async (event) => {
+      event.preventDefault();
+      await copyText(PROFILE.email);
+      toast.textContent = ui('emailCopied');
+      link.classList.add('is-copied');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => link.classList.remove('is-copied'), 2000);
     });
   });
 }
@@ -751,6 +794,7 @@ function setupParallax() {
 
 renderAll();
 setupLanguageSwitch();
+setupEmailCopy();
 setupMusic();
 setupNavigation();
 setupAmbience();

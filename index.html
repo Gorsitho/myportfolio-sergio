@@ -209,8 +209,10 @@
             <p data-i18n="contactText">Have a project, a role or just a question? My inbox is always open.</p>
             <ul class="contact__links" role="list">
               <li>
-                <a class="pixel-btn pixel-btn--gold" data-profile-link="email" href="#">
+                <!-- Click copies the address to the clipboard (see setupEmailCopy in script.js) -->
+                <a class="pixel-btn pixel-btn--gold copy-email" data-profile-link="email" href="#" data-i18n-title="copyEmail" title="Click to copy">
                   <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span data-profile="email">YOUR_EMAIL</span>
+                  <span class="copy-email__toast" role="status" aria-live="polite"></span>
                 </a>
               </li>
               <li>

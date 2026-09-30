@@ -1501,6 +1501,33 @@ a {
   overflow-wrap: anywhere;
 }
 
+/* "Copied!" bubble shown above the email button after a click */
+.copy-email {
+  position: relative;
+}
+
+.copy-email__toast {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 4px;
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  color: #fff;
+  text-shadow: none;
+  background: var(--ink);
+  border-radius: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, translate 0.15s;
+}
+
+.copy-email.is-copied .copy-email__toast {
+  opacity: 1;
+  translate: -50% 0;
+}
+
 .night__castle {
   width: 372px;
   height: 372px;
@@ -1570,10 +1597,12 @@ a {
   }
 }
 
-/* Slow horizontal cloud drift; --tile-w is one image width so the loop is seamless */
+/* Slow horizontal cloud drift; --tile-w is one image width so the loop is seamless.
+   Only the clouds move: the sky gradient (second background) stays at 0, otherwise
+   it slides away and leaves a dark gap behind it. */
 @keyframes sky-drift {
   to {
-    background-position-x: calc(-1 * var(--tile-w));
+    background-position-x: calc(-1 * var(--tile-w)), 0;
   }
 }
 
