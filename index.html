@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Title and description are also updated by script.js for the chosen language -->
+  <!-- Title and description are also updated by js/components/language.js for the chosen language -->
   <title>Sergio Daniel Velásquez — Developer</title>
   <meta name="description" content="Portfolio of Sergio Daniel Velásquez, software developer. Projects, skills and experience.">
   <meta name="theme-color" content="#1b1d3a">
@@ -13,7 +13,18 @@
   <meta property="og:image" content="assets/backgrounds/mountain-dusk.png">
   <link rel="icon" type="image/png" href="assets/dungeon/tile_0088.png">
   <link rel="preload" href="assets/fonts/pixelify-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css">
+  <!-- Order matters: later files build on earlier ones; responsive overrides come last -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/scenes.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/journey.css">
+  <link rel="stylesheet" href="css/projects.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
   <!-- Pixel icons (Pixelarticons, MIT) inlined so they work everywhere, even from file:// -->
@@ -209,7 +220,7 @@
             <p data-i18n="contactText">Have a project, a role or just a question? My inbox is always open.</p>
             <ul class="contact__links" role="list">
               <li>
-                <!-- Click copies the address to the clipboard (see setupEmailCopy in script.js) -->
+                <!-- Click copies the address to the clipboard (see setupEmailCopy in js/components/contact.js) -->
                 <a class="pixel-btn pixel-btn--gold copy-email" data-profile-link="email" href="#" data-i18n-title="copyEmail" title="Click to copy">
                   <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span data-profile="email">YOUR_EMAIL</span>
                   <span class="copy-email__toast" role="status" aria-live="polite"></span>
@@ -262,6 +273,21 @@
     </details>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Plain scripts (not ES modules) so the site also works opened from file://.
+       They share one global scope, so the order matters: data → utils → components → main. -->
+  <script src="js/data/portfolio.js"></script>
+  <script src="js/data/translations.js"></script>
+  <script src="js/utils/storage.js"></script>
+  <script src="js/utils/i18n.js"></script>
+  <script src="js/utils/dom.js"></script>
+  <script src="js/components/language.js"></script>
+  <script src="js/components/profile.js"></script>
+  <script src="js/components/quests.js"></script>
+  <script src="js/components/journey.js"></script>
+  <script src="js/components/contact.js"></script>
+  <script src="js/components/music.js"></script>
+  <script src="js/components/navigation.js"></script>
+  <script src="js/components/scenery.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

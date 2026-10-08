@@ -1,0 +1,100 @@
+/* =====================================================================
+   Responsive — loaded last so these overrides win over every file above
+   ===================================================================== */
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .achievements__list {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 560px;
+    margin-inline: auto;
+  }
+
+  .journey-columns {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+  }
+
+  .profile__inventory {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'head'
+      'grid'
+      'details';
+  }
+
+  .night {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .night__castle {
+    width: min(280px, 100%);
+    height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .scene {
+    padding: 96px 0 120px;
+  }
+
+  .scene--map {
+    --s-map: 2;
+  }
+
+  .map-compass {
+    top: 110px;
+    right: 12px;
+    opacity: 0.55;
+  }
+
+  .scene--meadow {
+    --s: 2;
+  }
+
+  .window {
+    padding: 18px;
+  }
+
+  .profile {
+    grid-template-columns: 1fr;
+  }
+
+  .profile__stats div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .board {
+    padding: 48px 14px 20px;
+    border-width: 6px;
+  }
+
+  .quest {
+    transform: none;
+  }
+
+  .quest:last-child:nth-child(odd) {
+    width: auto;
+    justify-self: stretch;
+  }
+
+  .board__quests {
+    grid-template-columns: 1fr;
+  }
+
+  .journey__stop {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .journey__marker {
+    width: 40px;
+    height: 40px;
+  }
+
+  .journey::before {
+    left: 17px;
+  }
+}

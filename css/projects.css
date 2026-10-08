@@ -1,0 +1,316 @@
+/* =====================================================================
+   4. Projects · Green meadow — quest board and achievements
+   ===================================================================== */
+
+/* ─── Green meadow background (Projects) ─── */
+.scene--meadow {
+  --s: 3;
+  --tile-w: calc(576px * var(--s));
+  --img-h: calc(324px * var(--s));
+  background: #1b2d3a;
+}
+
+/* The meadow art is shown at 70% opacity over the dark base */
+.parallax--meadow {
+  opacity: 0.7;
+}
+
+/* Green Meadow (CraftPix): sky + clouds, far trees, near trees, grass.
+   Every layer sits on the section bottom; the extra 800px lets it move freely. */
+.meadow-sky,
+.meadow-trees-far,
+.meadow-trees-near,
+.meadow-grass {
+  bottom: -800px;
+  height: calc(var(--img-h) + 800px);
+  background-size: var(--tile-w) var(--img-h), 100% 100%;
+  background-repeat: repeat-x, no-repeat;
+  background-position: left 0 top, 0 0;
+}
+
+.meadow-sky {
+  top: -800px;
+  height: auto;
+  background-image: url('../assets/backgrounds/meadow-sky.png'), linear-gradient(#249fde calc(100% - 900px), #fff 0);
+  background-position: left 0 bottom 800px, 0 0;
+  animation: sky-drift 150s linear infinite;
+}
+
+.meadow-trees-far {
+  background-image: url('../assets/backgrounds/meadow-trees-far.png');
+}
+
+.meadow-trees-near {
+  background-image: url('../assets/backgrounds/meadow-trees-near.png');
+}
+
+.meadow-grass {
+  background-image: url('../assets/backgrounds/meadow-grass.png'), linear-gradient(transparent calc(var(--img-h) - 2px), #2d8473 0);
+}
+
+/* ─── 4. Projects · Green meadow ─── */
+.board {
+  position: relative;
+  padding: 56px 28px 32px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 46px, rgb(0 0 0 / 0.18) 46px 50px),
+    linear-gradient(180deg, #9a6236, var(--wood));
+  border: 8px solid var(--wood-dark);
+  border-radius: 6px;
+  box-shadow: 8px 10px 0 rgb(0 0 0 / 0.25);
+}
+
+.board__sign {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  translate: -50% 0;
+  padding: 6px 28px;
+  font-family: var(--font-pixel);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  background: var(--wood-dark);
+  border: 4px solid #2c180c;
+  border-radius: 4px;
+}
+
+.board__quests {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quest {
+  position: relative;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px 20px;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--paper), #ead3a4);
+  border: 3px solid var(--ink-soft);
+  box-shadow: 4px 6px 0 rgb(0 0 0 / 0.3);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.15s;
+}
+
+/* The pin holding the quest on the board */
+.quest::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  translate: -50% 0;
+  background: #c8372d;
+  border: 2px solid #5b1510;
+  border-radius: 50%;
+}
+
+.quest:hover,
+.quest:focus-within {
+  transform: rotate(0) translateY(-4px);
+}
+
+.quest__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.quest__icon {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  padding: 4px;
+  background: #3a2a1f;
+  border-radius: 4px;
+}
+
+.quest__rank {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9a3b22;
+}
+
+.quest__title {
+  font-size: 1.35rem;
+}
+
+.quest__desc {
+  flex: 1;
+  color: var(--ink-soft);
+}
+
+.quest__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.quest__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.quest .btn {
+  box-shadow: 0 0 0 2px var(--ink), 0 4px 0 2px var(--ink);
+}
+
+/* "Completed" ink stamp: a double pixel frame with notched corners, pressed
+   onto the paper at an angle; the mask knocks out a few pixels so the ink
+   looks worn. */
+.quest__stamp {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 4px 4px auto;
+  padding: 7px 14px 7px 10px;
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b3261e;
+  border: 3px solid currentColor;
+  rotate: -8deg;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  user-select: none;
+  clip-path: polygon(
+    3px 0, calc(100% - 3px) 0, calc(100% - 3px) 3px, 100% 3px,
+    100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%,
+    3px calc(100% - 3px), 0 calc(100% - 3px), 0 3px, 3px 3px
+  );
+  --worn: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' shape-rendering='crispEdges'><path fill-rule='evenodd' d='M0 0h18v18H0z M2 3h1v1H2z M7 1h2v1H7z M12 5h1v1h-1z M15 2h1v2h-1z M4 9h2v1H4z M10 11h1v1h-1z M14 13h2v1h-2z M1 15h1v1H1z M6 14h1v2H6z M9 7h1v1H9z M16 9h1v1h-1z M12 16h2v1h-2z'/></svg>");
+  -webkit-mask: var(--worn) 0 0 / 36px 36px;
+  mask: var(--worn) 0 0 / 36px 36px;
+}
+
+.quest__stamp::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 2px solid currentColor;
+}
+
+.quest__stamp .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* "View code": same button in GitHub charcoal */
+.btn--code {
+  background: #2f363d;
+}
+
+.btn--code:hover {
+  background: #444d56;
+}
+
+.btn--code .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* An odd last quest sits centred on the board */
+.quest:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: calc(50% - 14px);
+}
+
+/* ─── Achievements: "unlocked" banners under the board ─── */
+.achievements {
+  margin-top: 56px;
+}
+
+.achievements__title {
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: 1.8rem;
+  color: #fff;
+  text-shadow: 3px 3px 0 rgb(0 0 0 / 0.45);
+}
+
+.achievements__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.achievement {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 16px;
+  color: #fbf1dc;
+  background: linear-gradient(180deg, #4a2b18, #2c180c);
+  border: 4px solid #e8c170;
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 4px #1a0e06,
+    6px 8px 0 4px rgb(0 0 0 / 0.3);
+  overflow-wrap: anywhere;
+}
+
+/* Gold-framed icon slot, like an item on a trophy shelf */
+.achievement__frame {
+  flex: none;
+  padding: 6px;
+  line-height: 0;
+  background: #f2b93f;
+  box-shadow:
+    inset 3px 3px 0 #ffe8a3,
+    inset -3px -3px 0 #a8661b,
+    0 0 0 3px #1a0e06;
+}
+
+.achievement__icon {
+  width: 48px;
+  height: 48px;
+  background: #2c180c;
+}
+
+.achievement__label {
+  margin: 0 0 2px;
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.achievement__title {
+  margin-bottom: 6px;
+  font-size: 1.15rem;
+}
+
+.achievement__desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #e2cfa8;
+}

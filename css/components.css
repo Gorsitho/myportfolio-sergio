@@ -1,0 +1,149 @@
+/* =====================================================================
+   Shared UI components — RPG window, buttons, pixel icons, tags
+   ===================================================================== */
+
+/* ─── RPG menu window (SNES style) ─── */
+.window {
+  position: relative;
+  padding: 24px;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--window-top), var(--window-bottom));
+  border: 4px solid #eef0ff;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 4px var(--window-edge),
+    8px 10px 0 4px rgb(0 0 0 / 0.35);
+}
+
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 18px;
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  color: var(--text);
+  text-decoration: none;
+  background: #26306f;
+  border: 3px solid #eef0ff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 3px var(--window-edge), 0 5px 0 3px var(--window-edge);
+  transition: transform 0.12s, background-color 0.12s;
+}
+
+.btn:hover {
+  background: #34409a;
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(2px);
+}
+
+.btn--small {
+  min-height: 38px;
+  padding: 4px 12px;
+  font-size: 0.95rem;
+}
+
+/* ─── Dimensional pixel buttons (hero + contact) ───
+   A bevelled face (light top/left, dark bottom/right), a notched pixel
+   outline and a thick bottom edge that makes the button stand up. */
+.pixel-btn {
+  --face: #26306f;
+  --light: #4a58b8;
+  --shade: #151b45;
+  --edge: #0b0e24;
+  --ink-color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 18px 12px;
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  color: var(--ink-color);
+  text-decoration: none;
+  text-shadow: 2px 2px 0 var(--shade);
+  background: var(--face);
+  box-shadow:
+    inset 3px 3px 0 var(--light),
+    inset -3px -5px 0 var(--shade),
+    0 -3px 0 0 var(--edge),
+    0 3px 0 0 var(--edge),
+    -3px 0 0 0 var(--edge),
+    3px 0 0 0 var(--edge),
+    0 9px 0 -3px var(--edge);
+  transition: transform 0.1s, filter 0.1s;
+}
+
+.pixel-btn:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+.pixel-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 3px 3px 0 var(--shade),
+    inset -3px -3px 0 var(--light),
+    0 -3px 0 0 var(--edge),
+    0 3px 0 0 var(--edge),
+    -3px 0 0 0 var(--edge),
+    3px 0 0 0 var(--edge);
+}
+
+.pixel-btn--gold {
+  --face: #ffc93c;
+  --light: #fff1a8;
+  --shade: #c47f18;
+  --ink-color: var(--ink);
+  text-shadow: 1px 1px 0 rgb(255 255 255 / 0.5);
+}
+
+.pixel-btn--github {
+  --face: #2f363d;
+  --light: #5b6570;
+  --shade: #161b22;
+}
+
+.pixel-btn--linkedin {
+  --face: #0a66c2;
+  --light: #4b9be6;
+  --shade: #064582;
+}
+
+/* Pixel icons (Pixelarticons), inlined as an SVG sprite and tinted with the text colour */
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  fill: currentColor;
+  shape-rendering: crispEdges;
+}
+
+.icon use {
+  pointer-events: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: 1px 8px;
+  font-family: var(--font-pixel);
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: var(--paper-dark);
+  border: 2px solid var(--ink-soft);
+  border-radius: 3px;
+}

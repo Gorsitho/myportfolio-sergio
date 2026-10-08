@@ -1,0 +1,140 @@
+/* =====================================================================
+   3. Journey · Old parchment map — work and education
+   ===================================================================== */
+
+/* ─── 3. Journey · Old parchment map ───
+   A seamless pixel-art map tile (coasts, mountains, forests, waves) that
+   drifts with the scroll, a compass rose on its own layer, and darkened
+   edges like worn, scorched parchment. */
+.scene--map {
+  --s-map: 3;
+  background: #cdb88a;
+}
+
+/* The whole map (paper, compass, vignette) is shown 40% darker */
+.parallax--map {
+  filter: brightness(0.6);
+}
+
+.parallax--map::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 90px 20px rgb(74 43 24 / 0.55);
+}
+
+.map-paper {
+  top: -400px;
+  bottom: -400px;
+  background-image: url('../assets/backgrounds/journey-map.png');
+  background-size: calc(384px * var(--s-map));
+  background-repeat: repeat;
+  background-position: center top;
+  opacity: 0.85;
+}
+
+.map-compass {
+  top: 64px;
+  left: auto;
+  right: max(24px, (100% - 1240px) / 2);
+  width: calc(41px * var(--s-map) * 4 / 3);
+  height: calc(45px * var(--s-map) * 4 / 3);
+  background: url('../assets/backgrounds/journey-compass.png') center / 100% 100% no-repeat;
+  opacity: 0.9;
+}
+
+/* Two centred columns: work (left) and education (right) */
+.journey-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.journey-col__title {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 3px 3px 0 rgb(0 0 0 / 0.45);
+}
+
+.journey {
+  position: relative;
+  display: grid;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The dotted route connecting the stops, drawn in red ink like on the map */
+.journey::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 21px;
+  width: 6px;
+  background: repeating-linear-gradient(180deg, #9a3b22 0 10px, transparent 10px 20px);
+  filter: drop-shadow(2px 2px 0 rgb(74 43 24 / 0.35));
+}
+
+.journey__stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.journey__marker {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(2px 3px 0 rgb(0 0 0 / 0.35));
+}
+
+.journey__card {
+  padding: 18px 20px;
+  overflow-wrap: anywhere;
+}
+
+.journey__period {
+  margin: 0 0 2px;
+  font-family: var(--font-pixel);
+  color: var(--gold);
+}
+
+.journey__title {
+  font-size: 1.2rem;
+}
+
+.journey__place {
+  margin-bottom: 6px;
+  font-style: italic;
+  color: var(--text-soft);
+}
+
+.journey__desc {
+  margin: 0;
+}
+
+/* Education cards: same window, in gold */
+.journey__card--education {
+  color: var(--ink);
+  background: linear-gradient(180deg, #ffe08a, #f2b93f);
+  border-color: #fff4c9;
+  box-shadow:
+    0 0 0 4px #4a2b18,
+    8px 10px 0 4px rgb(0 0 0 / 0.35);
+}
+
+.journey__card--education .journey__period {
+  color: #9a3b22;
+}
+
+.journey__card--education .journey__place {
+  color: var(--ink-soft);
+}

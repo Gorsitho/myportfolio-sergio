@@ -1,0 +1,53 @@
+/* =====================================================================
+   Animations — keyframes and reduced-motion preferences
+   ===================================================================== */
+
+/* ─── Animations ─── */
+@keyframes bob {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(16px, -24px);
+    opacity: 1;
+  }
+}
+
+@keyframes twinkle {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* Slow horizontal cloud drift; --tile-w is one image width so the loop is seamless.
+   Only the clouds move: the sky gradient (second background) stays at 0, otherwise
+   it slides away and leaves a dark gap behind it. */
+@keyframes sky-drift {
+  to {
+    background-position-x: calc(-1 * var(--tile-w)), 0;
+  }
+}
+
+@keyframes hero-pan {
+  to {
+    transform: translateX(12px);
+  }
+}
+
+/* ─── Reduced motion: stop all ambient animation ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

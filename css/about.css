@@ -1,0 +1,268 @@
+/* =====================================================================
+   2. About · Forest — character profile and skill inventory
+   ===================================================================== */
+
+/* ─── 2. About · Forest ─── */
+.scene--forest {
+  background: #b07030;
+}
+
+.forest,
+.forest__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.forest__layer {
+  left: -25%;
+  right: -25%;
+  background-repeat: repeat-x;
+  background-position: center bottom;
+  background-size: auto 100%;
+  image-rendering: pixelated;
+}
+
+.forest__layer--back {
+  background-image: url('../assets/backgrounds/forest-back-trees.png');
+}
+
+.forest__layer--lights {
+  background-image: url('../assets/backgrounds/forest-lights.png');
+  opacity: 0.8;
+}
+
+.forest__layer--middle {
+  background-image: url('../assets/backgrounds/forest-middle-trees.png');
+}
+
+.forest__layer--front {
+  background-image: url('../assets/backgrounds/forest-front-trees.png');
+}
+
+.profile {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px 32px;
+  max-width: 860px;
+  margin-inline: auto;
+}
+
+.profile__portrait {
+  text-align: center;
+}
+
+/* Portrait: a real photo inside a bevelled gold pixel frame.
+   The photo is scaled smoothly (not pixelated) so it stays sharp. */
+.profile__frame {
+  width: fit-content;
+  margin: 0 auto 12px;
+  padding: 6px;
+  background: #f2b93f;
+  box-shadow:
+    inset 3px 3px 0 #ffe8a3,
+    inset -3px -3px 0 #a8661b,
+    0 -4px 0 0 var(--window-edge),
+    0 4px 0 0 var(--window-edge),
+    -4px 0 0 0 var(--window-edge),
+    4px 0 0 0 var(--window-edge),
+    6px 8px 0 2px rgb(0 0 0 / 0.35);
+}
+
+.profile__photo {
+  display: block;
+  width: 176px;
+  height: 176px;
+  object-fit: cover;
+  image-rendering: auto;
+  border: 3px solid var(--window-edge);
+  background: #0f1640;
+}
+
+.profile__class {
+  font-family: var(--font-pixel);
+  color: var(--gold);
+}
+
+.profile__stats {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  align-self: center;
+}
+
+.profile__stats div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px dotted rgb(255 255 255 / 0.25);
+}
+
+.profile__stats dt {
+  font-family: var(--font-pixel);
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile__stats dd {
+  margin: 0;
+}
+
+/* Inventory: last row of the character screen */
+.profile__inventory {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-areas:
+    'head head'
+    'grid details';
+  gap: 14px 20px;
+  padding-top: 20px;
+  border-top: 2px dotted rgb(255 255 255 / 0.25);
+}
+
+.inventory__head {
+  grid-area: head;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+}
+
+.inventory__head h3 {
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+
+.inventory__hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.inventory__grid {
+  grid-area: grid;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 6px;
+  font-family: var(--font-pixel);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: rgb(8 12 40 / 0.55);
+  border: 3px solid #6b76c9;
+  border-radius: 4px;
+  cursor: var(--cursor-pointer);
+  transition: border-color 0.12s, transform 0.12s;
+}
+
+.slot img {
+  width: 40px;
+  height: 40px;
+}
+
+.slot:hover {
+  border-color: #eef0ff;
+  transform: translateY(-2px);
+}
+
+.slot[aria-pressed='true'] {
+  border-color: var(--gold);
+  background: rgb(255 211 92 / 0.15);
+}
+
+.inventory__details {
+  grid-area: details;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px;
+  background: rgb(8 12 40 / 0.55);
+  border: 3px solid #6b76c9;
+  border-radius: 4px;
+}
+
+.inventory__details img {
+  width: 48px;
+  height: 48px;
+  flex: none;
+}
+
+.inventory__name {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 1.4rem;
+  color: var(--gold);
+}
+
+.inventory__type {
+  margin-bottom: 8px;
+  font-family: var(--font-pixel);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.inventory__desc {
+  margin: 0;
+}
+
+/* Wooden panel with gold trim (About card): matches the forest, the quest
+   board and the parchment instead of the blue menu windows. */
+.window--wood {
+  --wood-line: rgb(255 226 170 / 0.22);
+  --slot-bg: rgb(26 14 6 / 0.55);
+  --slot-edge: #a8763f;
+  color: #fbf1dc;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 38px, rgb(0 0 0 / 0.14) 38px 41px),
+    linear-gradient(180deg, #6b4126, #3d2414);
+  border-color: #e8c170;
+  box-shadow:
+    0 0 0 4px #1a0e06,
+    8px 10px 0 4px rgb(0 0 0 / 0.35);
+}
+
+.window--wood .profile__stats div,
+.window--wood .profile__inventory {
+  border-color: var(--wood-line);
+}
+
+.window--wood .profile__photo {
+  border-color: #1a0e06;
+  background: #2c180c;
+}
+
+.window--wood .inventory__hint,
+.window--wood .inventory__type {
+  color: #e2cfa8;
+}
+
+.window--wood .slot,
+.window--wood .inventory__details {
+  color: inherit;
+  background: var(--slot-bg);
+  border-color: var(--slot-edge);
+}
+
+.window--wood .slot:hover {
+  border-color: #f3e3bf;
+}
+
+.window--wood .slot[aria-pressed='true'] {
+  border-color: var(--gold);
+  background: rgb(255 211 92 / 0.16);
+}

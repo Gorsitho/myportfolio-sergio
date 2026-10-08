@@ -1,0 +1,138 @@
+/* =====================================================================
+   Base — font, design tokens (colours, cursors, sizes), reset, utilities
+   Colours and fonts are defined as variables at the top.
+   ===================================================================== */
+
+@font-face {
+  font-family: 'Pixelify Sans';
+  src: url('../assets/fonts/pixelify-sans-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  --font-pixel: 'Pixelify Sans', ui-monospace, monospace;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --ink: #2a1d14;
+  --ink-soft: #5b4636;
+  --paper: #f3e3bf;
+  --paper-dark: #dcc394;
+  --wood: #7a4a2a;
+  --wood-dark: #4a2b18;
+  --gold: #ffd35c;
+  --text: #f6f1ff;
+  --text-soft: #d3d6f2;
+  --window-top: #3a4ab0;
+  --window-bottom: #1b2366;
+  --window-edge: #0e1230;
+  --focus: #ffd35c;
+
+  /* Medieval pixel cursors: the usual arrow shape, forged in steel with a
+     wooden grip; links and buttons turn it gold.
+     Browsers resolve these URLs relative to the stylesheet that uses
+     var(--cursor…), so every stylesheet must stay directly inside css/. */
+  --cursor: url('../assets/cursor/arrow.svg') 1 1, auto;
+  --cursor-pointer: url('../assets/cursor/arrow-gold.svg') 1 1, pointer;
+
+  --nav-height: 60px;
+  --container: 1080px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: var(--nav-height);
+  cursor: var(--cursor);
+}
+
+a,
+button,
+summary,
+label {
+  cursor: var(--cursor-pointer);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: #05060f;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-pixel);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 0.75em;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.pixel {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 8px 14px;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--font-pixel);
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 32px, var(--container));
+  margin-inline: auto;
+}

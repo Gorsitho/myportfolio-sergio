@@ -1,0 +1,267 @@
+/* =====================================================================
+   Page layout — fixed navigation bar and footer
+   ===================================================================== */
+
+/* ─── Navigation ─── */
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--nav-height);
+  padding-inline: max(16px, (100% - var(--container)) / 2);
+  font-family: var(--font-pixel);
+  background: rgb(14 18 48 / 0.9);
+  border-bottom: 3px solid #eef0ff;
+  box-shadow: 0 3px 0 var(--window-edge);
+  backdrop-filter: blur(4px);
+}
+
+.nav__brand {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 1.2rem;
+  color: var(--gold);
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: none;
+}
+
+/* Links first, flags last on wide screens */
+.nav__right nav {
+  order: 1;
+}
+
+.lang-switch {
+  order: 2;
+  display: flex;
+  gap: 6px;
+}
+
+.lang-switch__btn {
+  padding: 3px;
+  line-height: 0;
+  background: #26306f;
+  border: 2px solid #6b76c9;
+  border-radius: 3px;
+  cursor: var(--cursor-pointer);
+  transition: transform 0.12s, border-color 0.12s;
+}
+
+.lang-switch__btn img {
+  width: 32px;
+  height: 22px;
+}
+
+.lang-switch__btn:hover {
+  border-color: #eef0ff;
+  transform: translateY(-2px);
+}
+
+/* Music on/off: shows the speaker with waves while playing, crossed out when silent */
+.music-toggle {
+  order: 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 32px;
+  padding: 0;
+  color: var(--text);
+  background: #26306f;
+  border: 2px solid #6b76c9;
+  border-radius: 3px;
+  cursor: var(--cursor-pointer);
+  transition: transform 0.12s, border-color 0.12s;
+}
+
+.music-toggle:hover {
+  border-color: #eef0ff;
+  transform: translateY(-2px);
+}
+
+.music-toggle[aria-pressed='true'] {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.music-toggle[aria-pressed='true'] .icon--off,
+.music-toggle[aria-pressed='false'] .icon--on {
+  display: none;
+}
+
+
+.lang-switch__btn[aria-pressed='true'] {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgb(255 211 92 / 0.35);
+}
+
+.nav__links {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav__links a {
+  display: block;
+  padding: 6px 12px;
+  color: var(--text-soft);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.nav__links a:hover {
+  color: var(--text);
+}
+
+/* The current section gets the classic RPG menu cursor */
+.nav__links a.is-active {
+  color: var(--gold);
+  background: rgb(255 255 255 / 0.08);
+}
+
+.nav__links a.is-active::before {
+  content: '▸ ';
+}
+
+.nav__toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: #26306f;
+  border: 3px solid #eef0ff;
+  border-radius: 4px;
+  cursor: var(--cursor-pointer);
+}
+
+.nav__toggle-bars,
+.nav__toggle-bars::before,
+.nav__toggle-bars::after {
+  display: block;
+  width: 20px;
+  height: 3px;
+  margin-inline: auto;
+  background: var(--text);
+}
+
+.nav__toggle-bars {
+  position: relative;
+}
+
+.nav__toggle-bars::before,
+.nav__toggle-bars::after {
+  content: '';
+  position: absolute;
+}
+
+.nav__toggle-bars::before {
+  top: -7px;
+}
+
+.nav__toggle-bars::after {
+  top: 7px;
+}
+
+@media (max-width: 1024px) {
+  .nav__toggle {
+    display: block;
+    order: 4;
+  }
+
+  .nav__links {
+    position: absolute;
+    top: calc(var(--nav-height) + 8px);
+    right: 16px;
+    display: none;
+    flex-direction: column;
+    min-width: 200px;
+    padding: 12px;
+    background: linear-gradient(180deg, var(--window-top), var(--window-bottom));
+    border: 4px solid #eef0ff;
+    border-radius: 8px;
+    box-shadow: 0 0 0 4px var(--window-edge);
+  }
+
+  .nav.is-open .nav__links {
+    display: flex;
+  }
+
+  .nav__links a {
+    padding: 10px 12px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav__right,
+  .lang-switch {
+    gap: 4px;
+  }
+
+  .lang-switch__btn {
+    padding: 2px;
+  }
+
+  .lang-switch__btn img {
+    width: 24px;
+    height: 17px;
+  }
+
+  .music-toggle {
+    width: 32px;
+    height: 28px;
+  }
+
+  .music-toggle .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ─── Footer ─── */
+.footer {
+  padding: 40px 16px 48px;
+  text-align: center;
+  color: var(--text-soft);
+  background: #05060f;
+  border-top: 3px solid #1c2150;
+}
+
+.footer__thanks {
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+
+.credits {
+  max-width: 640px;
+  margin: 16px auto 0;
+  font-size: 0.9rem;
+}
+
+.credits summary {
+  font-family: var(--font-pixel);
+  cursor: var(--cursor-pointer);
+}
+
+.credits ul {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credits li {
+  margin-bottom: 6px;
+}
