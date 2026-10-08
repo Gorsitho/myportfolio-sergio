@@ -62,6 +62,18 @@ const PROJECTS = [
     icon: 'assets/dungeon/tile_0104.png',
     rank: 'side',
   },
+  {
+    title: 'FocusDeskAI',
+    description: {
+      en: 'FocusDesk AI is a desktop application developed with Python that analyzes concentration while studying using a camera and AI.',
+      es: 'FocusDesk AI es una aplicación de escritorio desarrollada con Python que analiza la concentración durante el estudio mediante una cámara e IA.',
+      de: 'FocusDesk AI ist eine mit Python entwickelte Desktop-Anwendung, die mithilfe einer Kamera und KI die Konzentration beim Lernen analysiert.',
+    },
+    technologies: ['Python', 'AI'],
+    code: 'https://github.com/Gorsitho/FocusDeskAI',
+    icon: 'assets/dungeon/tile_0116.png',
+    rank: 'side',
+  },
 ];
 
 // Shown below the quest board. Icons are 16×16 pixel art in assets/achievements/
