@@ -70,6 +70,7 @@ const PROJECTS = [
       de: 'FocusDesk AI ist eine mit Python entwickelte Desktop-Anwendung, die mithilfe einer Kamera und KI die Konzentration beim Lernen analysiert.',
     },
     technologies: ['Python', 'AI'],
+    demo: 'https://drive.google.com/file/d/1F3ZBbRRkuLd8LDCunW3tDbPR5AGlv3XL/view?usp=sharing',
     code: 'https://github.com/Gorsitho/FocusDeskAI',
     icon: 'assets/dungeon/tile_0116.png',
     rank: 'side',
